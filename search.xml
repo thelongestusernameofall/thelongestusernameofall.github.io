@@ -18,4 +18,16 @@
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>404</title>
+    <url>//404.html</url>
+    <content><![CDATA[<hr>
+<div align=center align=mid style="font-size:4em">Page Not Found</div>
+
+<hr>
+]]></content>
+      <tags>
+        <tag>404</tag>
+      </tags>
+  </entry>
 </search>

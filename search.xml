@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>test</title>
+    <url>/2022/03/09/test/</url>
+    <content><![CDATA[<p>test</p>
+]]></content>
+  </entry>
+  <entry>
     <title>404</title>
     <url>//404.html</url>
     <content><![CDATA[<hr>
@@ -11,11 +17,5 @@
       <tags>
         <tag>404</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2022/03/09/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
   </entry>
 </search>

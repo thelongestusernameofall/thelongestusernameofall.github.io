@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="1. 漏洞样式通常情况下漏洞程序样式：   Table 1. Vulnerable Code Demo [Table 1] [lang:c]123char buffer[1024];gets(buffer, 1024);printf(buffer);  字符串 buffer 可控且作为 printf 的第一个参数。当其中包含 格式化字符(例如%s, %d, %p等) 时，栈上的内容就会被当做pri">
+<meta name="description" content="1. 漏洞样式通常情况下漏洞程序样式：   Table 1. Vulnerable Code Demo 123char buffer[1024];gets(buffer, 1024);printf(buffer);  字符串 buffer 可控且作为 printf 的第一个参数。当其中包含 格式化字符(例如%s, %d, %p等) 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Format-String Attack">
 <meta property="og:url" content="http://www.pwn2own.fun/2022/03/18/fmtstr_attack/index.html">
 <meta property="og:site_name" content="A4x7eq28&#39;Blog">
-<meta property="og:description" content="1. 漏洞样式通常情况下漏洞程序样式：   Table 1. Vulnerable Code Demo [Table 1] [lang:c]123char buffer[1024];gets(buffer, 1024);printf(buffer);  字符串 buffer 可控且作为 printf 的第一个参数。当其中包含 格式化字符(例如%s, %d, %p等) 时，栈上的内容就会被当做pri">
+<meta property="og:description" content="1. 漏洞样式通常情况下漏洞程序样式：   Table 1. Vulnerable Code Demo 123char buffer[1024];gets(buffer, 1024);printf(buffer);  字符串 buffer 可控且作为 printf 的第一个参数。当其中包含 格式化字符(例如%s, %d, %p等) 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s2.loli.net/2022/03/18/vqXDrI3Z5m4CHRE.png">
 <meta property="article:published_time" content="2022-03-18T03:42:27.000Z">
-<meta property="article:modified_time" content="2022-03-18T09:59:31.000Z">
+<meta property="article:modified_time" content="2022-03-18T10:08:47.000Z">
 <meta property="article:author" content="A4x7eq28">
 <meta property="article:tag" content="Format String">
 <meta name="twitter:card" content="summary">
@@ -368,7 +368,7 @@
       
         <h2 id="1-漏洞样式"><a href="#1-漏洞样式" class="headerlink" title="1. 漏洞样式"></a>1. 漏洞样式</h2><p>通常情况下漏洞程序样式：  </p>
 <div align=center>Table 1. Vulnerable Code Demo</div>
-<figure class="highlight plaintext"><figcaption><span>[Table 1] [lang:c]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char buffer[1024];</span><br><span class="line">gets(buffer, 1024);</span><br><span class="line">printf(buffer);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char buffer[1024];</span><br><span class="line">gets(buffer, 1024);</span><br><span class="line">printf(buffer);</span><br></pre></td></tr></table></figure>
 
 <p>字符串 <strong>buffer</strong> 可控且作为 <strong>printf</strong> 的第一个参数。当其中包含 <strong>格式化字符(例如%s, %d, %p等)</strong> 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。</p>
 <h2 id="2-利用方法"><a href="#2-利用方法" class="headerlink" title="2. 利用方法"></a>2. 利用方法</h2><h3 id="2-1-确定偏移"><a href="#2-1-确定偏移" class="headerlink" title="2.1 确定偏移"></a>2.1 确定偏移</h3><p> 输入字符串（即Table 1中<strong>buffer</strong>）在栈上的偏移，即<strong>buffer</strong>被<strong>printf</strong>当做参数时，作为第几个参数。参数序号从0开始： printf(arg0, arg1, arg2, …, argn); 第10参数即表示arg10</p>
@@ -391,12 +391,12 @@
 <p>例如： </p>
 <h4 id="2-2-1-当target-value-较小时，直接写入"><a href="#2-2-1-当target-value-较小时，直接写入" class="headerlink" title="2.2.1 当target_value 较小时，直接写入"></a>2.2.1 当<strong>target_value</strong> 较小时，直接写入</h4><p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）</p>
 <div align=center>Table 2. Payload Demo 1</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 写4到target_address</span><br><span class="line">payload1 = p32(target_address) + b&#x27;%10$n\0&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 写4到target_address</span><br><span class="line">payload1 = p32(target_address) + b&#x27;%10$n\0&#x27;</span><br></pre></td></tr></table></figure>
 
 
 <p>其中：<br>payload1实现写4(p32为4byte)到target_address</p>
 <div align=center>Table 3. Payload Demo 2</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    </span><br><span class="line">payload2 = b&#x27;%13$n&#x27; + b&#x27;%100c&#x27; </span><br><span class="line">payload2 = payload2.ljust(12, b&#x27;a&#x27;)</span><br><span class="line">payload2 += p32(target_address)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload2 = b&#x27;%13$n&#x27; + b&#x27;%100c&#x27; </span><br><span class="line">payload2 = payload2.ljust(12, b&#x27;a&#x27;)</span><br><span class="line">payload2 += p32(target_address)</span><br></pre></td></tr></table></figure>
 
 <p>payload2实现写100到target_address, 此处由于target_adress没有写在字符串的开头，因此需要重新计算在栈上的偏移：字符串开头位于arg10处，字符串中target_address之前有12个字符即占3个参数位，因此target_address对应的参数位为13</p>
 <h4 id="2-2-2-当target-value太大时，分字节写入"><a href="#2-2-2-当target-value太大时，分字节写入" class="headerlink" title="2.2.2 当target_value太大时，分字节写入"></a>2.2.2 当target_value太大时，分字节写入</h4><p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）；且需要向<strong>target_address</strong> 中写入的<strong>target_value</strong>为<em><strong>0xbaedbeef</strong></em>。  </p>

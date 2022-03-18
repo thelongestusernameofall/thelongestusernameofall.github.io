@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="test">
+<meta name="description" content="Unsorted-bin Attack1. Unsorted-bin   prev_size chunk_size    fd bk   |  2. unsorted-bin Leak当chunk被free到unsorted-bin中， 其列表如下： 【av(unsorted)】-&gt;A">
 <meta property="og:type" content="article">
 <meta property="og:title" content="test">
 <meta property="og:url" content="http://www.pwn2own.fun/2022/03/09/test/index.html">
 <meta property="og:site_name" content="A4x7eq28&#39;Blog">
-<meta property="og:description" content="test">
+<meta property="og:description" content="Unsorted-bin Attack1. Unsorted-bin   prev_size chunk_size    fd bk   |  2. unsorted-bin Leak当chunk被free到unsorted-bin中， 其列表如下： 【av(unsorted)】-&gt;A">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-09T12:32:28.000Z">
-<meta property="article:modified_time" content="2022-03-09T12:32:42.000Z">
+<meta property="article:modified_time" content="2022-03-10T12:03:27.000Z">
 <meta property="article:author" content="A4x7eq28">
 <meta name="twitter:card" content="summary">
 
@@ -363,7 +363,22 @@
       
 
       
-        <p>test</p>
+        <h2 id="Unsorted-bin-Attack"><a href="#Unsorted-bin-Attack" class="headerlink" title="Unsorted-bin Attack"></a><dir align=center>Unsorted-bin Attack</h2><h3 id="1-Unsorted-bin"><a href="#1-Unsorted-bin" class="headerlink" title="1. Unsorted-bin"></a>1. Unsorted-bin</h3><table>
+<thead>
+<tr>
+<th>prev_size</th>
+<th>chunk_size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fd</td>
+<td>bk</td>
+</tr>
+</tbody></table>
+<pre><code>|
+</code></pre>
+<h3 id="2-unsorted-bin-Leak"><a href="#2-unsorted-bin-Leak" class="headerlink" title="2. unsorted-bin Leak"></a>2. unsorted-bin Leak</h3><p>当chunk被free到unsorted-bin中， 其列表如下：</p>
+<p>【av(unsorted)】-&gt;A</p>
 
       
     </div>
@@ -397,6 +412,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/18/fmtstr_attack/" rel="prev" title="Format-String Attack">
+                Format-String Attack <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -448,8 +467,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -464,7 +492,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -477,7 +505,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -500,6 +528,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsorted-bin-Attack"><span class="nav-number">1.</span> <span class="nav-text">Unsorted-bin Attack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Unsorted-bin"><span class="nav-number">1.1.</span> <span class="nav-text">1. Unsorted-bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-unsorted-bin-Leak"><span class="nav-number">1.2.</span> <span class="nav-text">2. unsorted-bin Leak</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

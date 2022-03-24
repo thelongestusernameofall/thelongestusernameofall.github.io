@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.4x7.fun/categories/index-1.html</loc>
+    
+    <lastmod>2022-03-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/links/index.html</loc>
     
     <lastmod>2022-03-24</lastmod>
@@ -101,13 +110,6 @@
 
   
   <url>
-    <loc>http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/</loc>
-    <lastmod>2022-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://www.4x7.fun/tags/404/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -122,27 +124,27 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/shellcode/</loc>
-    <lastmod>2022-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://www.4x7.fun/tags/Format-String/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/</loc>
+    <loc>http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/shellcode/</loc>
+    <lastmod>2022-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
   
   <url>
     <loc>http://www.4x7.fun/categories/HeapAttack-tcache/</loc>
@@ -152,14 +154,21 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
+    <loc>http://www.4x7.fun/categories/Format-String/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/Format-String/</loc>
+    <loc>http://www.4x7.fun/categories/HeapAttack/</loc>
+    <lastmod>2022-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/categories/shellcode/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

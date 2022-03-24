@@ -10,11 +10,11 @@ http://www.4x7.fun/2022/03/18/fmtstr_attack/
 http://www.4x7.fun/404.html
 http://www.4x7.fun/
 http://www.4x7.fun/tags/404/
-http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/
 http://www.4x7.fun/tags/HeapAttack-House-of-Botcake-tcache/
-http://www.4x7.fun/tags/Format-String/
+http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/
 http://www.4x7.fun/tags/shellcode/
-http://www.4x7.fun/categories/HeapAttack/
+http://www.4x7.fun/tags/Format-String/
 http://www.4x7.fun/categories/HeapAttack-tcache/
-http://www.4x7.fun/categories/Format-String/
+http://www.4x7.fun/categories/HeapAttack/
 http://www.4x7.fun/categories/shellcode/
+http://www.4x7.fun/categories/Format-String/

@@ -129,6 +129,20 @@
   </url>
   
   <url>
+    <loc>http://www.4x7.fun/tags/shellcode/</loc>
+    <lastmod>2022-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/Format-String/</loc>
+    <lastmod>2022-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/tags/LargeBinAttack/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -144,20 +158,6 @@
   
   <url>
     <loc>http://www.4x7.fun/tags/Write-After-Free/</loc>
-    <lastmod>2022-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/Format-String/</loc>
-    <lastmod>2022-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/shellcode/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -180,14 +180,14 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/Format-String/</loc>
+    <loc>http://www.4x7.fun/categories/shellcode/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
+    <loc>http://www.4x7.fun/categories/Format-String/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

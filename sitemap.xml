@@ -110,14 +110,28 @@
 
   
   <url>
-    <loc>http://www.4x7.fun/tags/404/</loc>
+    <loc>http://www.4x7.fun/tags/HeapAttack/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/HeapAttack/</loc>
+    <loc>http://www.4x7.fun/tags/House-of-Botcake/</loc>
+    <lastmod>2022-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/tcache/</loc>
+    <lastmod>2022-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/404/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -166,14 +180,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/House-of-Botcake/</loc>
-    <lastmod>2022-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/tcache/</loc>
+    <loc>http://www.4x7.fun/tags/Format-String/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -181,13 +188,6 @@
   
   <url>
     <loc>http://www.4x7.fun/tags/shellcode/</loc>
-    <lastmod>2022-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/Format-String/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -203,14 +203,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
-    <lastmod>2022-04-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/FSOP/</loc>
+    <loc>http://www.4x7.fun/categories/HeapAttack/tcache/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -224,7 +217,14 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/tcache/</loc>
+    <loc>http://www.4x7.fun/categories/shellcode/</loc>
+    <lastmod>2022-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/categories/HeapAttack/FSOP/</loc>
     <lastmod>2022-04-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

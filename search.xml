@@ -12,35 +12,79 @@
       </tags>
   </entry>
   <entry>
-    <title>HeapAttack: House_of_Botcake</title>
-    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
-    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+    <title>HeapAttack: House_of_Orange</title>
+    <url>/2022/03/25/HeapAttack-House-of-Orange/</url>
+    <content><![CDATA[<h2 id="漏洞样式"><a class="markdownIt-Anchor" href="#漏洞样式"></a> 漏洞样式</h2>
 <ul>
-<li>glibc版本：≥ 2.3.1</li>
-<li>Tcache：开启</li>
-<li>漏洞要求：double free</li>
+<li>漏洞要求：libc-leak， 任意地址写(_IO_list_all劫持), 大块chunk控制(伪造_IO_FILE结构)</li>
+<li>libc版本：glibc-2.3及以下</li>
 </ul>
 <h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
 <h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<p>绕过Tcache的 tcache-dup 检查，将 <em><strong>可控chunk</strong></em> 插入 <em><strong>Tcache-list</strong></em>,修改 <em><strong>可控chunk</strong></em> 的 <em><strong>fd</strong></em> 字段，从而 <strong>最终实现</strong> <em><strong>任意地址写</strong></em>’。</p>
-<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
-<p>伪代码表示如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
-<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
+<ul>
+<li>GetShell：<br />
+通过劫持_IO_list_all.vtable中某函数指针，篡改为system或one_gadget, 并伪造_IO_FILE结构从而使程序在调用 _IO_flush_all_lockp 函数后能够最终调用到system或one_gadet。_IO_flush_all_lockp</li>
+</ul>
+<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
+<ul>
+<li>
+<ol>
+<li>使用unsortedbin attack，largebin attack，tcache dup、House Of Botcake等任意地址写技术将_IO_list_all改写为攻击者可控内存地址(记为fakeIOList)。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>在fakeIOList上布置内存布局，使得以类型Struct _IO_File 解析fakeIOList</li>
+</ol>
+<ul>
+<li>a. fp-&gt;_mode &lt;= 0</li>
+<li>b. fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>vtable 指向可控内存区域，修改 vtable-&gt;__overflow 为目标函数(system或者one_gadget)</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>[可选的]若vtable-&gt;__overflow指向system。可将fp-&gt;_flags 写成b&quot;/bin/sh\0&quot;。因为最终调用的代码是：</li>
+</ol>
+<blockquote>
+<p>_IO_OVERFLOW (fp, EOF)<br />
+即</p>
+</blockquote>
+<blockquote>
+<p>fp-&gt;vtable-&gt;__overflow(fp)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="3-注意"><a class="markdownIt-Anchor" href="#3-注意"></a> 3. 注意</h2>
+<p>参考链接(IO FILE 之劫持vtable及FSOP)中的以下两个技巧的学习：</p>
+<ol>
+<li>通过mmap 0x200000的超大chunk，该chunk会恰好分配在libc的上方，这样可以leak libc地址。</li>
+<li>当top_chunk size不够分配内存时，main_arena会sbrk新的page；若旧top_chunk的末尾地址与sbrk新分配内存的开始地址不邻接，则会把旧top_chunk free掉。我们这样就不经过free获得了一个unsortedbin chunk。</li>
+</ol>
+<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
+<ol>
+<li><a href="https://xz.aliyun.com/t/5508">IO FILE 之劫持vtable及FSOP</a></li>
+<li><a href="https://xz.aliyun.com/t/5579">IO FILE 之vtable check 以及绕过</a></li>
+<li><a href="https://www.52pojie.cn/thread-1539815-1-1.html">从零开始的Linux堆利用(七)——House of Orange</a></li>
+</ol>
 ]]></content>
       <categories>
         <category>HeapAttack</category>
-        <category>tcache</category>
+        <category>FSOP</category>
       </categories>
       <tags>
         <tag>HeapAttack</tag>
-        <tag>House_of_Botcake</tag>
-        <tag>tcache</tag>
+        <tag>_IO_list_all</tag>
+        <tag>unsortedbin attack</tag>
+        <tag>FSOP</tag>
       </tags>
   </entry>
   <entry>
-    <title>HeapAttack: LargeBinAttack</title>
+    <title>HeapAttack: LargeBin Attack</title>
     <url>/2022/03/23/HeapAttack-LargeBinAttack/</url>
     <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
 <ul>
@@ -86,6 +130,34 @@ large-bin:
         <tag>LargeBinAttack</tag>
         <tag>Arbitrary Write</tag>
         <tag>Write After Free</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HeapAttack: House_of_Botcake</title>
+    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
+    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+<ul>
+<li>glibc版本：≥ 2.3.1</li>
+<li>Tcache：开启</li>
+<li>漏洞要求：double free</li>
+</ul>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
+<p>绕过Tcache的 tcache-dup 检查，将 <em><strong>可控chunk</strong></em> 插入 <em><strong>Tcache-list</strong></em>,修改 <em><strong>可控chunk</strong></em> 的 <em><strong>fd</strong></em> 字段，从而 <strong>最终实现</strong> <em><strong>任意地址写</strong></em>’。</p>
+<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
+<p>伪代码表示如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
+<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
+]]></content>
+      <categories>
+        <category>HeapAttack</category>
+        <category>tcache</category>
+      </categories>
+      <tags>
+        <tag>HeapAttack</tag>
+        <tag>House_of_Botcake</tag>
+        <tag>tcache</tag>
       </tags>
   </entry>
   <entry>
@@ -181,78 +253,6 @@ payload1实现写4(p32为4byte)到target_address</p>
       </categories>
       <tags>
         <tag>Format String</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HeapAttack: House_of_Orange</title>
-    <url>/2022/03/25/HeapAttack-House-of-Orange/</url>
-    <content><![CDATA[<h2 id="漏洞样式"><a class="markdownIt-Anchor" href="#漏洞样式"></a> 漏洞样式</h2>
-<ul>
-<li>漏洞要求：libc-leak， 任意地址写(_IO_list_all劫持), 大块chunk控制(伪造_IO_FILE结构)</li>
-<li>libc版本：glibc-2.3及以下</li>
-</ul>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<ul>
-<li>GetShell：<br />
-通过劫持_IO_list_all.vtable中某函数指针，篡改为system或one_gadget, 并伪造_IO_FILE结构从而使程序在调用 _IO_flush_all_lockp 函数后能够最终调用到system或one_gadet。_IO_flush_all_lockp</li>
-</ul>
-<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
-<ul>
-<li>
-<ol>
-<li>使用unsortedbin attack，largebin attack，tcache dup、House Of Botcake等任意地址写技术将_IO_list_all改写为攻击者可控内存地址(记为fakeIOList)。</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>在fakeIOList上布置内存布局，使得以类型Struct _IO_File 解析fakeIOList</li>
-</ol>
-<ul>
-<li>a. fp-&gt;_mode &lt;= 0</li>
-<li>b. fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</li>
-</ul>
-</li>
-<li>
-<ol start="3">
-<li>vtable 指向可控内存区域，修改 vtable-&gt;__overflow 为目标函数(system或者one_gadget)</li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li>[可选的]若vtable-&gt;__overflow指向system。可将fp-&gt;_flags 写成b&quot;/bin/sh\0&quot;。因为最终调用的代码是：</li>
-</ol>
-<blockquote>
-<p>_IO_OVERFLOW (fp, EOF)<br />
-即</p>
-</blockquote>
-<blockquote>
-<p>fp-&gt;vtable-&gt;__overflow(fp)</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="3-注意"><a class="markdownIt-Anchor" href="#3-注意"></a> 3. 注意</h2>
-<p>参考链接(IO FILE 之劫持vtable及FSOP)中的以下两个技巧的学习：</p>
-<ol>
-<li>通过mmap 0x200000的超大chunk，该chunk会恰好分配在libc的上方，这样可以leak libc地址。</li>
-<li>当top_chunk size不够分配内存时，main_arena会sbrk新的page；若旧top_chunk的末尾地址与sbrk新分配内存的开始地址不邻接，则会把旧top_chunk free掉。我们这样就不经过free获得了一个unsortedbin chunk。</li>
-</ol>
-<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
-<ol>
-<li><a href="https://xz.aliyun.com/t/5508">IO FILE 之劫持vtable及FSOP</a></li>
-<li><a href="https://xz.aliyun.com/t/5579">IO FILE 之vtable check 以及绕过</a></li>
-<li><a href="https://www.52pojie.cn/thread-1539815-1-1.html">从零开始的Linux堆利用(七)——House of Orange</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>HeapAttack</category>
-        <category>FSOP</category>
-      </categories>
-      <tags>
-        <tag>HeapAttack</tag>
-        <tag>_IO_list_all</tag>
-        <tag>unsortedbin attack</tag>
-        <tag>FSOP</tag>
       </tags>
   </entry>
 </search>

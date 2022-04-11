@@ -1,3 +1,6 @@
+http://www.4x7.fun/2022/04/11/WriteUp-hitcontraining-playfmt/
+http://www.4x7.fun/2022/04/07/AFL-Frida-Mode-Usecases-for-testing-and-debugging/
+http://www.4x7.fun/2022/04/05/AFL-Frida-Mode-Scripting/
 http://www.4x7.fun/2022/03/25/HeapAttack-House-of-Orange/
 http://www.4x7.fun/2022/03/23/HeapAttack-LargeBinAttack/
 http://www.4x7.fun/2022/03/21/shellcode/

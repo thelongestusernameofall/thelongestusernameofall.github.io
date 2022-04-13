@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.4x7.fun/2022/04/13/WriteUp-0CTF-2016-warmup/</loc>
+    <lastmod>2022-04-13</lastmod>
+  </url>
+  <url>
     <loc>http://www.4x7.fun/2022/04/11/WriteUp-hitcontraining-playfmt/</loc>
+    <lastmod>2022-04-13</lastmod>
+  </url>
+  <url>
+    <loc>http://www.4x7.fun/2022/04/05/AFL-Frida-Mode-Scripting/</loc>
+    <lastmod>2022-04-11</lastmod>
+  </url>
+  <url>
+    <loc>http://www.4x7.fun/2022/04/07/AFL-Frida-Mode-Usecases-for-testing-and-debugging/</loc>
     <lastmod>2022-04-11</lastmod>
   </url>
   <url>
@@ -13,19 +25,11 @@
     <lastmod>2022-04-11</lastmod>
   </url>
   <url>
-    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
-    <lastmod>2022-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://www.4x7.fun/2022/03/21/shellcode/</loc>
     <lastmod>2022-04-11</lastmod>
   </url>
   <url>
-    <loc>http://www.4x7.fun/2022/04/07/AFL-Frida-Mode-Usecases-for-testing-and-debugging/</loc>
-    <lastmod>2022-04-11</lastmod>
-  </url>
-  <url>
-    <loc>http://www.4x7.fun/2022/04/05/AFL-Frida-Mode-Scripting/</loc>
+    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
     <lastmod>2022-04-11</lastmod>
   </url>
   <url>

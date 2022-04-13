@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.4x7.fun/2022/04/13/System-Call-Table-x86-32/</loc>
+    
+    <lastmod>2022-04-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/2022/04/13/WriteUp-0CTF-2016-warmup/</loc>
     
     <lastmod>2022-04-13</lastmod>
@@ -56,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/2022/03/21/shellcode/</loc>
+    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
     
     <lastmod>2022-04-11</lastmod>
     
@@ -65,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
+    <loc>http://www.4x7.fun/2022/03/21/shellcode/</loc>
     
     <lastmod>2022-04-11</lastmod>
     
@@ -146,6 +155,13 @@
 
   
   <url>
+    <loc>http://www.4x7.fun/tags/System-Call-Table/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/tags/404/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -202,6 +218,27 @@
   </url>
   
   <url>
+    <loc>http://www.4x7.fun/tags/IO-list-all/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/unsortedbin-attack/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/FSOP/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/tags/LargeBinAttack/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -223,7 +260,28 @@
   </url>
   
   <url>
+    <loc>http://www.4x7.fun/tags/x86-32/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://www.4x7.fun/tags/Write-Up/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/Format-String-Attack/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/Format-String/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -251,48 +309,20 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/IO-list-all/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/unsortedbin-attack/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/FSOP/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/Format-String-Attack/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://www.4x7.fun/tags/shellcode/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
+
+  
   <url>
-    <loc>http://www.4x7.fun/tags/Format-String/</loc>
+    <loc>http://www.4x7.fun/categories/System-Call-Table/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
-  
-
   
   <url>
     <loc>http://www.4x7.fun/categories/Fuzz/</loc>
@@ -316,7 +346,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
+    <loc>http://www.4x7.fun/categories/Format-String/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -330,14 +360,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/Format-String/</loc>
-    <lastmod>2022-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/Write-Up/Stack-Overflow/</loc>
+    <loc>http://www.4x7.fun/categories/shellcode/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -352,6 +375,13 @@
   
   <url>
     <loc>http://www.4x7.fun/categories/Write-Up/Format-String-Attack/</loc>
+    <lastmod>2022-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/categories/Write-Up/Stack-Overflow/</loc>
     <lastmod>2022-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

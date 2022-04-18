@@ -1,3 +1,4 @@
+http://www.4x7.fun/2022/04/18/WriteUp-w0odpeck3r-s-Nest/
 http://www.4x7.fun/2022/04/13/System-Call-Table-x86-64/
 http://www.4x7.fun/2022/04/13/System-Call-Table-x86-32/
 http://www.4x7.fun/2022/04/13/WriteUp-0CTF-2016-warmup/
@@ -40,6 +41,8 @@ http://www.4x7.fun/tags/system-call/
 http://www.4x7.fun/tags/Format-String-Attack/
 http://www.4x7.fun/tags/Format-String/
 http://www.4x7.fun/tags/shellcode/
+http://www.4x7.fun/tags/Heap-Overflow/
+http://www.4x7.fun/tags/Off-By-One/
 http://www.4x7.fun/categories/Fuzz/
 http://www.4x7.fun/categories/HeapAttack/
 http://www.4x7.fun/categories/System-Call-Table/
@@ -50,3 +53,4 @@ http://www.4x7.fun/categories/HeapAttack/FSOP/
 http://www.4x7.fun/categories/Write-Up/Stack-Overflow/
 http://www.4x7.fun/categories/Write-Up/Format-String-Attack/
 http://www.4x7.fun/categories/shellcode/
+http://www.4x7.fun/categories/Write-Up/Heap-Overflow/

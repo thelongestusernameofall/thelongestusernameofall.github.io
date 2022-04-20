@@ -2,18 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.4x7.fun/2022/04/18/WriteUp-w0odpeck3r-s-Nest/</loc>
+    <loc>http://www.4x7.fun/2022/04/20/WriteUp-ciscn-2019-sw-7/</loc>
     
-    <lastmod>2022-04-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/2022/04/13/System-Call-Table-x86-64/</loc>
-    
-    <lastmod>2022-04-13</lastmod>
+    <lastmod>2022-04-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +13,61 @@
   <url>
     <loc>http://www.4x7.fun/2022/04/13/System-Call-Table-x86-32/</loc>
     
-    <lastmod>2022-04-13</lastmod>
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/03/18/HeapAttack-House-of-Botcake/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/03/25/HeapAttack-House-of-Orange/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/03/23/HeapAttack-LargeBinAttack/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/03/21/shellcode/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/04/13/System-Call-Table-x86-64/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -31,7 +76,16 @@
   <url>
     <loc>http://www.4x7.fun/2022/04/13/WriteUp-0CTF-2016-warmup/</loc>
     
-    <lastmod>2022-04-13</lastmod>
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/04/19/WriteUp-Baby-Tcache-ciscn-2019-n-2/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -40,7 +94,25 @@
   <url>
     <loc>http://www.4x7.fun/2022/04/11/WriteUp-hitcontraining-playfmt/</loc>
     
-    <lastmod>2022-04-13</lastmod>
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/04/17/WriteUp-SECPROG-calculator/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/2022/04/18/WriteUp-w0odpeck3r-s-Nest/</loc>
+    
+    <lastmod>2022-04-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -56,54 +128,9 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/2022/03/18/HeapAttack-House-of-Botcake/</loc>
-    
-    <lastmod>2022-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://www.4x7.fun/2022/04/05/AFL-Frida-Mode-Scripting/</loc>
     
     <lastmod>2022-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/2022/03/23/HeapAttack-LargeBinAttack/</loc>
-    
-    <lastmod>2022-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/2022/03/18/fmtstr_attack/</loc>
-    
-    <lastmod>2022-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/2022/03/21/shellcode/</loc>
-    
-    <lastmod>2022-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/2022/03/25/HeapAttack-House-of-Orange/</loc>
-    
-    <lastmod>2022-03-25</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -166,7 +193,7 @@
 
   <url>
     <loc>http://www.4x7.fun/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -174,182 +201,203 @@
   
   <url>
     <loc>http://www.4x7.fun/tags/404/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Fuzz/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Blind-Fuzz/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/AFL/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Frida/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/HeapAttack/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/House-of-Botcake/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/tcache/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/IO-list-all/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/unsortedbin-attack/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/FSOP/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/LargeBinAttack/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Arbitrary-Write/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Write-After-Free/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/System-Call-Table/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/x86-32/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/x86-64/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Write-Up/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Stack-Overflow/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/alarm/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/system-call/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Format-String-Attack/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Format-String/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/shellcode/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Heap-Overflow/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/tags/Off-By-One/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/T-cache/</loc>
+    <lastmod>2022-04-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/Integer-Underflow/</loc>
+    <lastmod>2022-04-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/Integer-Wraparound/</loc>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -358,77 +406,21 @@
   
   <url>
     <loc>http://www.4x7.fun/categories/Fuzz/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/System-Call-Table/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/tcache/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://www.4x7.fun/categories/Write-Up/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/categories/Format-String/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/HeapAttack/FSOP/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/Write-Up/Stack-Overflow/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/Write-Up/Format-String-Attack/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/shellcode/</loc>
-    <lastmod>2022-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/categories/Write-Up/Heap-Overflow/</loc>
-    <lastmod>2022-04-18</lastmod>
+    <loc>http://www.4x7.fun/categories/Pwn2Own/</loc>
+    <lastmod>2022-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

@@ -1,3 +1,4 @@
+http://www.4x7.fun/2022/04/24/WriteUp-2022DASCTF-Apr-X-FATE-good-luck/
 http://www.4x7.fun/2022/04/20/WriteUp-ciscn-2019-sw-7/
 http://www.4x7.fun/2022/04/13/System-Call-Table-x86-32/
 http://www.4x7.fun/2022/03/18/fmtstr_attack/

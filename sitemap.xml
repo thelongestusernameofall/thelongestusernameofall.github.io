@@ -391,7 +391,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/Off-By-One/</loc>
+    <loc>http://www.4x7.fun/tags/shellcode/</loc>
     <lastmod>2023-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -405,7 +405,7 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/shellcode/</loc>
+    <loc>http://www.4x7.fun/tags/Off-By-One/</loc>
     <lastmod>2023-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

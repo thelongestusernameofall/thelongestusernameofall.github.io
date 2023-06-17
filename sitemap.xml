@@ -286,20 +286,6 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/System-Call-Table/</loc>
-    <lastmod>2023-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.4x7.fun/tags/x86-32/</loc>
-    <lastmod>2023-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://www.4x7.fun/tags/LargeBinAttack/</loc>
     <lastmod>2023-06-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -321,7 +307,14 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/x86-64/</loc>
+    <loc>http://www.4x7.fun/tags/System-Call-Table/</loc>
+    <lastmod>2023-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/x86-32/</loc>
     <lastmod>2023-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -350,6 +343,13 @@
   
   <url>
     <loc>http://www.4x7.fun/tags/system-call/</loc>
+    <lastmod>2023-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.4x7.fun/tags/x86-64/</loc>
     <lastmod>2023-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -398,14 +398,14 @@
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/Format-String/</loc>
+    <loc>http://www.4x7.fun/tags/shellcode/</loc>
     <lastmod>2023-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://www.4x7.fun/tags/shellcode/</loc>
+    <loc>http://www.4x7.fun/tags/Format-String/</loc>
     <lastmod>2023-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
